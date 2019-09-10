@@ -118,8 +118,8 @@ public class GCSSource extends Source {
      */
     @Override
     public StateFactory init(SourceEventListener sourceEventListener, OptionHolder optionHolder,
-        String[] requestedTransportPropertyNames, ConfigReader configReader,
-        SiddhiAppContext siddhiAppContext) {
+                             String[] requestedTransportPropertyNames, ConfigReader configReader,
+                             SiddhiAppContext siddhiAppContext) {
         return null;
     }
 

@@ -19,6 +19,9 @@
 
 package io.siddhi.extension.io.gcs.util;
 
+/**
+ * Interface for RotationStrategies
+ */
 public interface RotationStrategy {
 
     void queueEvent(String objectName, Object event);

@@ -29,6 +29,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class to hold configurations required for the GCS sink.
+ */
 public class GCSSinkConfig extends GCSConfig {
     private StorageClass storageClass;
     private boolean versioningEnabled;

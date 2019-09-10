@@ -19,10 +19,13 @@
 
 package io.siddhi.extension.io.gcs.util;
 
+/**
+ * Class to define constants that are required for the GCS Source/Sink.
+ */
 public class GCSConstants {
 
     // attribute names
-    public static final String BUCKET_NAME =  "bucket.name";
+    public static final String BUCKET_NAME = "bucket.name";
     public static final String CREDENTIAL_FILE_PATH = "credential.provider.file.path";
     public static final String ENABLE_VERSIONING = "versioning.enabled";
     public static final String STORAGE_CLASS = "storage.class";

@@ -155,7 +155,7 @@
         </plugins>
     </build>
     <properties>
-        <siddhi.version>5.1.1</siddhi.version>
+        <siddhi.version>5.1.3</siddhi.version>
         <log4j.version>1.2.17</log4j.version>
         <carbon.transport.version>4.4.15</carbon.transport.version>
         <siddhi.map.json.version>4.0.15</siddhi.map.json.version>

@@ -19,6 +19,9 @@
 
 package io.siddhi.extension.io.gcs.sink;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import io.siddhi.annotation.Example;
 import io.siddhi.annotation.Extension;
 import io.siddhi.annotation.Parameter;
@@ -34,6 +37,11 @@ import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
 import io.siddhi.query.api.definition.StreamDefinition;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import org.apache.log4j.Logger;
 
 /**
  * This is a sample class-level comment, explaining what the extension class does.
@@ -164,16 +172,25 @@ import io.siddhi.query.api.definition.StreamDefinition;
 
 public class GCSSink extends Sink {
 
+    private GCSSinkConfig gcsSinkConfig;
+    private OptionHolder optionHolder;
+    private Storage storage;
+    private String mapType;
+
+    private static final Logger logger = Logger.getLogger(GCSSink.class);
+
+
     /**
      * Returns the list of classes which this sink can consume.
      * Based on the type of the sink, it may be limited to being able to publish specific type of classes.
      * For example, a sink of type file can only write objects of type String .
+     *
      * @return array of supported classes , if extension can support of any types of classes
      * then return empty array .
      */
     @Override
     public Class[] getSupportedInputEventClasses() {
-            return new Class[0];
+        return new Class[] {String.class, ByteBuffer.class};
     }
 
     /**
@@ -184,43 +201,61 @@ public class GCSSink extends Sink {
      */
     @Override
     public String[] getSupportedDynamicOptions() {
-            return new String[0];
+        return new String[] {GCSConstants.OBJECT_ACL, GCSConstants.OBJECT_NAME};
     }
 
     /**
      * The initialization method for {@link Sink}, will be called before other methods. It used to validate
      * all configurations and to get initial values.
-     * @param streamDefinition        containing stream definition bind to the {@link Sink}
-     * @param optionHolder            Option holder containing static and dynamic configuration related
-     *                                to the {@link Sink}
-     * @param configReader            to read the sink related system configuration.
-     * @param siddhiAppContext        the context of the {@link io.siddhi.query.api.SiddhiApp} used to
-     *                                get siddhi related utility functions.
+     *
+     * @param streamDefinition containing stream definition bind to the {@link Sink}
+     * @param optionHolder     Option holder containing static and dynamic configuration related
+     *                         to the {@link Sink}
+     * @param configReader     to read the sink related system configuration.
+     * @param siddhiAppContext the context of the {@link io.siddhi.query.api.SiddhiApp} used to
+     *                         get siddhi related utility functions.
      * @return StateFactory for the Function which contains logic for the updated state based on arrived events.
      */
     @Override
     protected StateFactory init(StreamDefinition streamDefinition, OptionHolder optionHolder, ConfigReader configReader,
                                 SiddhiAppContext siddhiAppContext) {
+        this.gcsSinkConfig = new GCSSinkConfig(optionHolder);
+        this.optionHolder = optionHolder;
+
+        try {
+            // Initialize the GCS client with the user authentication.
+            storage = StorageOptions.newBuilder()
+                    .setCredentials(GoogleCredentials
+                            .fromStream(new FileInputStream(
+                                    new File(gcsSinkConfig.getAuthFilePath())))).build().getService();
+
+        } catch (IOException e) {
+            logger.error("Authentication with Google Cloud Storage failed please " +
+                    "check the Authorization credentials again", e);
+        }
+
         return null;
     }
 
     /**
      * This method will be called when events need to be published via this sink
-     * @param payload         payload of the event based on the supported event class exported by the extensions
-     * @param dynamicOptions  holds the dynamic options of this sink and Use this object to obtain dynamic options.
-     * @param state           current state of the sink
+     *
+     * @param payload        payload of the event based on the supported event class exported by the extensions
+     * @param dynamicOptions holds the dynamic options of this sink and Use this object to obtain dynamic options.
+     * @param state          current state of the sink
      * @throws ConnectionUnavailableException if end point is unavailable the ConnectionUnavailableException thrown
      *                                        such that the  system will take care retrying for connection
      */
     @Override
     public void publish(Object payload, DynamicOptions dynamicOptions, State state)
-                                                                              throws ConnectionUnavailableException {
+            throws ConnectionUnavailableException {
 
     }
 
     /**
      * This method will be called before the processing method.
      * Intention to establish connection to publish event.
+     *
      * @throws ConnectionUnavailableException if end point is unavailable the ConnectionUnavailableException thrown
      *                                        such that the  system will take care retrying for connection
      */

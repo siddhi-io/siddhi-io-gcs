@@ -85,7 +85,8 @@ import org.apache.log4j.Logger;
                         type = DataType.STRING,
                         description = "Absolute path for the location of the authentication file obtained through the" +
                                 " Google Cloud Platform Console",
-                        optional = true
+                        optional = true,
+                        defaultValue = "null"
                 ),
                 @Parameter(
                         name = GCSConstants.ENABLE_VERSIONING,
@@ -122,7 +123,8 @@ import org.apache.log4j.Logger;
                         optional = true,
                         dynamic = true,
                         description = "Access Control List for the object level ACL defined as a key value pair list" +
-                                " defined as \"'<key>:<value>','<key>:<value>'\""
+                                " defined as \"'<key>:<value>','<key>:<value>'\"",
+                        defaultValue = "null"
                 ),
                 @Parameter(
                         name = GCSConstants.OBJECT_METADATA,
@@ -130,7 +132,8 @@ import org.apache.log4j.Logger;
                         optional = true,
                         dynamic = true,
                         description = "Object level metadata for the object defined as a key value pair list" +
-                                " defined as \"'<key>:<value>','<key>:<value>'\""
+                                " defined as \"'<key>:<value>','<key>:<value>'\"",
+                        defaultValue = "null"
                 ),
                 @Parameter(
                         name = GCSConstants.OBJECT_NAME,

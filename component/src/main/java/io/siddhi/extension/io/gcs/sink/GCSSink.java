@@ -21,6 +21,8 @@ package io.siddhi.extension.io.gcs.sink;
 
 import io.siddhi.annotation.Example;
 import io.siddhi.annotation.Extension;
+import io.siddhi.annotation.Parameter;
+import io.siddhi.annotation.util.DataType;
 import io.siddhi.core.config.SiddhiAppContext;
 import io.siddhi.core.exception.ConnectionUnavailableException;
 import io.siddhi.core.stream.ServiceDeploymentInfo;
@@ -30,6 +32,7 @@ import io.siddhi.core.util.snapshot.state.State;
 import io.siddhi.core.util.snapshot.state.StateFactory;
 import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.OptionHolder;
+import io.siddhi.extension.io.gcs.util.GCSConstants;
 import io.siddhi.query.api.definition.StreamDefinition;
 
 /**
@@ -60,16 +63,94 @@ import io.siddhi.query.api.definition.StreamDefinition;
  */
 
 @Extension(
-        name = "google cloud storage",
+        name = "google-cloud-storage",
         namespace = "sink",
         description = " ",
         parameters = {
-                /*@Parameter(name = " ",
-                        description = " " ,
-                        dynamic = false/true,
-                        optional = true/false, defaultValue = " ",
-                        type = {DataType.INT, DataType.BOOL, DataType.STRING, DataType.DOUBLE,etc }),
-                        type = {DataType.INT, DataType.BOOL, DataType.STRING, DataType.DOUBLE, }),*/
+                @Parameter(
+                        name = GCSConstants.BUCKET_NAME,
+                        type = DataType.STRING,
+                        description = "Name of the GCS bucket"
+                ),
+                @Parameter(
+                        name = GCSConstants.CREDENTIAL_FILE_PATH,
+                        type = DataType.STRING,
+                        description = "Absolute path for the location of the authentication file obtained through the" +
+                                " Google Cloud Platform Console",
+                        optional = true
+                ),
+                @Parameter(
+                        name = GCSConstants.ENABLE_VERSIONING,
+                        type = DataType.BOOL,
+                        optional = true,
+                        defaultValue = "false",
+                        description = "Boolean option to indicate whether the bucket should enable versioning or not"
+                ),
+                @Parameter(
+                        name = GCSConstants.STORAGE_CLASS,
+                        type = DataType.STRING,
+                        description = "Storage class of the objects that are stored in the bucket possible values " +
+                                "are, `multi-regional`, `regional`, 'nearline', `coldline`"
+                ),
+                @Parameter(
+                        name = GCSConstants.CONTENT_TYPE,
+                        type = DataType.STRING,
+                        optional = true,
+                        defaultValue = "text/plain",
+                        description = "Type of the objects written to the bucket"
+
+                ),
+                @Parameter(
+                        name = GCSConstants.BUCKET_ACL,
+                        type = DataType.STRING,
+                        optional = true,
+                        defaultValue = "null",
+                        description = "Access Control List for the bucket level ACL defined as a key value pair list" +
+                                " defined as \"'<key>:<value>','<key>:<value>'\""
+                ),
+                @Parameter(
+                        name = GCSConstants.OBJECT_ACL,
+                        type = DataType.STRING,
+                        optional = true,
+                        dynamic = true,
+                        description = "Access Control List for the object level ACL defined as a key value pair list" +
+                                " defined as \"'<key>:<value>','<key>:<value>'\""
+                ),
+                @Parameter(
+                        name = GCSConstants.OBJECT_METADATA,
+                        type = DataType.STRING,
+                        optional = true,
+                        dynamic = true,
+                        description = "Object level metadata for the object defined as a key value pair list" +
+                                " defined as \"'<key>:<value>','<key>:<value>'\""
+                ),
+                @Parameter(
+                        name = GCSConstants.OBJECT_NAME,
+                        type = DataType.STRING,
+                        dynamic = true,
+                        description = "Full name of the object given to the object including the path"
+                ),
+                @Parameter(
+                        name = GCSConstants.FLUSH_SIZE,
+                        type = DataType.INT,
+                        optional = true,
+                        defaultValue = "1",
+                        description = "Number of events that the sink will wait before making a file commit"
+                ),
+                @Parameter(
+                        name = GCSConstants.ROTATE_INTERVAL,
+                        type = DataType.INT,
+                        optional = true,
+                        defaultValue = "-1",
+                        description = "Maximum span of event time"
+                ),
+                @Parameter(
+                        name = GCSConstants.ROTATE_SCHEDULED_INTERVAL,
+                        type = DataType.STRING,
+                        optional = true,
+                        defaultValue = "-1",
+                        description = "Maximum span of event time from the first event"
+                ),
         },
         examples = {
                 @Example(

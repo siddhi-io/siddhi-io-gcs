@@ -19,14 +19,12 @@
 
 package io.siddhi.extension.io.gcs.sink;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
 import io.siddhi.annotation.Example;
 import io.siddhi.annotation.Extension;
 import io.siddhi.annotation.Parameter;
 import io.siddhi.annotation.util.DataType;
 import io.siddhi.core.config.SiddhiAppContext;
+import io.siddhi.core.event.Event;
 import io.siddhi.core.exception.ConnectionUnavailableException;
 import io.siddhi.core.stream.ServiceDeploymentInfo;
 import io.siddhi.core.stream.output.sink.Sink;
@@ -35,14 +33,20 @@ import io.siddhi.core.util.snapshot.state.State;
 import io.siddhi.core.util.snapshot.state.StateFactory;
 import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.OptionHolder;
+import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
+import io.siddhi.extension.io.gcs.sink.internal.beans.PublisherObjectHolder;
+import io.siddhi.extension.io.gcs.sink.internal.publisher.EventPublisher;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
+import io.siddhi.extension.io.gcs.util.ServiceClient;
+import io.siddhi.query.api.annotation.Annotation;
 import io.siddhi.query.api.definition.StreamDefinition;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.Logger;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * This is a sample class-level comment, explaining what the extension class does.
@@ -119,24 +123,6 @@ import java.nio.ByteBuffer;
                                 " defined as \"'<key>:<value>','<key>:<value>'\""
                 ),
                 @Parameter(
-                        name = GCSConstants.OBJECT_ACL,
-                        type = DataType.STRING,
-                        optional = true,
-                        dynamic = true,
-                        description = "Access Control List for the object level ACL defined as a key value pair list" +
-                                " defined as \"'<key>:<value>','<key>:<value>'\"",
-                        defaultValue = "null"
-                ),
-                @Parameter(
-                        name = GCSConstants.OBJECT_METADATA,
-                        type = DataType.STRING,
-                        optional = true,
-                        dynamic = true,
-                        description = "Object level metadata for the object defined as a key value pair list" +
-                                " defined as \"'<key>:<value>','<key>:<value>'\"",
-                        defaultValue = "null"
-                ),
-                @Parameter(
                         name = GCSConstants.OBJECT_NAME,
                         type = DataType.STRING,
                         dynamic = true,
@@ -156,13 +142,13 @@ import java.nio.ByteBuffer;
                         defaultValue = "-1",
                         description = "Maximum span of event time"
                 ),
-                @Parameter(
-                        name = GCSConstants.ROTATE_SCHEDULED_INTERVAL,
-                        type = DataType.STRING,
-                        optional = true,
-                        defaultValue = "-1",
-                        description = "Maximum span of event time from the first event"
-                ),
+//                @Parameter(
+//                        name = GCSConstants.ROTATE_SCHEDULED_INTERVAL,
+//                        type = DataType.STRING,
+//                        optional = true,
+//                        defaultValue = "-1",
+//                        description = "Maximum span of event time from the first event"
+//                ),
         },
         examples = {
                 @Example(
@@ -174,12 +160,12 @@ import java.nio.ByteBuffer;
 
 // for more information refer https://siddhi-io.github.io/siddhi/documentation/siddhi-5.x/query-guide-5.x/#sink
 
-public class GCSSink extends Sink {
+public class GCSSink extends Sink<GCSSink.GCSSinkState> {
 
     private GCSSinkConfig gcsSinkConfig;
     private OptionHolder optionHolder;
-    private Storage storage;
-    private String mapType;
+    private EventPublisher eventPublisher;
+    List<String> payloadObjects = new ArrayList<>();
 
     private static final Logger logger = Logger.getLogger(GCSSink.class);
 
@@ -194,7 +180,7 @@ public class GCSSink extends Sink {
      */
     @Override
     public Class[] getSupportedInputEventClasses() {
-        return new Class[] {String.class, ByteBuffer.class};
+        return new Class[] {String.class, Event.class};
     }
 
     /**
@@ -205,7 +191,7 @@ public class GCSSink extends Sink {
      */
     @Override
     public String[] getSupportedDynamicOptions() {
-        return new String[] {GCSConstants.OBJECT_ACL, GCSConstants.OBJECT_NAME};
+        return new String[] {GCSConstants.OBJECT_NAME};
     }
 
     /**
@@ -221,25 +207,15 @@ public class GCSSink extends Sink {
      * @return StateFactory for the Function which contains logic for the updated state based on arrived events.
      */
     @Override
-    protected StateFactory init(StreamDefinition streamDefinition, OptionHolder optionHolder, ConfigReader configReader,
-                                SiddhiAppContext siddhiAppContext) {
+    protected StateFactory<GCSSinkState> init(StreamDefinition streamDefinition, OptionHolder optionHolder, ConfigReader configReader,
+                                              SiddhiAppContext siddhiAppContext) {
         this.gcsSinkConfig = new GCSSinkConfig(optionHolder);
+        this.gcsSinkConfig.setMapType(extractMapType(streamDefinition));
         this.optionHolder = optionHolder;
 
-        try {
-            // Initialize the GCS client with the user authentication.
-            storage = StorageOptions.newBuilder()
-                    .setCredentials(GoogleCredentials
-                            .fromStream(new FileInputStream(
-                                    new File(gcsSinkConfig.getAuthFilePath())))).build().getService();
-
-        } catch (IOException e) {
-            logger.error("Authentication with Google Cloud Storage failed please " +
-                    "check the Authorization credentials again", e);
-        }
-
-        return null;
+        return GCSSinkState::new;
     }
+
 
     /**
      * This method will be called when events need to be published via this sink
@@ -251,10 +227,10 @@ public class GCSSink extends Sink {
      *                                        such that the  system will take care retrying for connection
      */
     @Override
-    public void publish(Object payload, DynamicOptions dynamicOptions, State state)
-            throws ConnectionUnavailableException {
-
+    public void publish(Object payload, DynamicOptions dynamicOptions, GCSSinkState state) throws ConnectionUnavailableException {
+        payloadObjects.add(payload.toString());
     }
+
 
     /**
      * This method will be called before the processing method.
@@ -265,7 +241,7 @@ public class GCSSink extends Sink {
      */
     @Override
     public void connect() throws ConnectionUnavailableException {
-
+//        eventPublisher = new EventPublisher(gcsSinkConfig, optionHolder);
     }
 
     /**
@@ -286,6 +262,20 @@ public class GCSSink extends Sink {
 
     }
 
+    private String extractMapType(StreamDefinition streamDefinition) {
+        Optional<Annotation> mapAnnotation = streamDefinition.getAnnotations()
+                .stream()
+                .filter(e -> e.getName().equals("sink"))
+                .findFirst()
+                .get()
+                .getAnnotations()
+                .stream()
+                .filter(e -> e.getName().equals("map"))
+                .findFirst();
+
+        return mapAnnotation.map(annotation -> annotation.getElement("type")).orElse(GCSConstants.DEFAULT_MAPPING_TYPE);
+    }
+
     /**
      * Give information to the deployment about the service exposed by the sink.
      *
@@ -295,5 +285,30 @@ public class GCSSink extends Sink {
     protected ServiceDeploymentInfo exposeServiceDeploymentInfo() {
         return null;
     }
+
+    class GCSSinkState extends State {
+
+        @Override
+        public boolean canDestroy() {
+            return false;
+        }
+
+        @Override
+        public Map<String, Object> snapshot() {
+            Map<String, Object> state = new HashMap<>();
+
+            state.put(GCSConstants.EVENT_OFFSET_MAP, eventPublisher.getEventOffsetMap());
+            state.put(GCSConstants.EVENT_QUEUE_MAP, eventPublisher.getEventQueue());
+
+            return state;
+        }
+
+        @Override
+        public void restore(Map<String, Object> state) {
+            eventPublisher.setEventOffsetMap((HashMap<String, Integer>) state.get(GCSConstants.EVENT_OFFSET_MAP));
+            eventPublisher.setEventQueue((HashMap<String, PublisherObjectHolder>) state.get(GCSConstants.EVENT_QUEUE_MAP));
+        }
+    }
+
 
 }

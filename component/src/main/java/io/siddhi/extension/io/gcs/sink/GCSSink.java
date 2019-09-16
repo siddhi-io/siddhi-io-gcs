@@ -241,7 +241,7 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
      */
     @Override
     public void connect() throws ConnectionUnavailableException {
-//        eventPublisher = new EventPublisher(gcsSinkConfig, optionHolder);
+        eventPublisher.initializeServiceClient();
     }
 
     /**

@@ -17,13 +17,55 @@
  *
  */
 
-package io.siddhi.extension.io.gcs.sink.internal;
+package io.siddhi.extension.io.gcs.sink.internal.util;
+
+import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
+import io.siddhi.extension.io.gcs.sink.internal.beans.PublisherObjectHolder;
+import io.siddhi.extension.io.gcs.util.ServiceClient;
+import java.util.HashMap;
 
 /**
  * Interface for RotationStrategies
  */
-public interface RotationStrategy {
+public abstract class RotationStrategy {
 
-    void queueEvent(String objectName, Object event);
 
+    private GCSSinkConfig config;
+    private ServiceClient client;
+    private HashMap<String, Integer> eventOffsetMap = new HashMap<>();
+    private HashMap<String, PublisherObjectHolder> eventQueue = new HashMap<>();
+
+    protected abstract void queueEvent(String objectName, Object event);
+
+    public HashMap<String, Integer> getEventOffsetMap() {
+        return eventOffsetMap;
+    }
+
+    public HashMap<String, PublisherObjectHolder> getEventQueue() {
+        return eventQueue;
+    }
+
+    public void setEventOffsetMap(HashMap<String, Integer> eventOffsetMap) {
+        this.eventOffsetMap = eventOffsetMap;
+    }
+
+    public void setEventQueue(HashMap<String, PublisherObjectHolder> eventQueue) {
+        this.eventQueue = eventQueue;
+    }
+
+    public GCSSinkConfig getConfig() {
+        return config;
+    }
+
+    public ServiceClient getClient() {
+        return client;
+    }
+
+    public void setConfig(GCSSinkConfig config) {
+        this.config = config;
+    }
+
+    public void setClient(ServiceClient client) {
+        this.client = client;
+    }
 }

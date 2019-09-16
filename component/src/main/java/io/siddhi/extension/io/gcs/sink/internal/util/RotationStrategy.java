@@ -17,7 +17,7 @@
  *
  */
 
-package io.siddhi.extension.io.gcs.util;
+package io.siddhi.extension.io.gcs.sink.internal;
 
 /**
  * Interface for RotationStrategies

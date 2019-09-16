@@ -31,13 +31,16 @@ public class GCSConstants {
     public static final String STORAGE_CLASS = "storage.class";
     public static final String CONTENT_TYPE = "content.type";
     public static final String BUCKET_ACL = "bucket.acl";
-    public static final String OBJECT_ACL = "object.acl";
-    public static final String OBJECT_METADATA = "object.metadata";
     public static final String OBJECT_NAME = "object.name";
     public static final String FLUSH_SIZE = "flush.size";
     public static final String ROTATE_INTERVAL = "rotate.interval.ms";
     public static final String ROTATE_SCHEDULED_INTERVAL = "rotate.scheduled.interval.ms";
 
+    public static final String DEFAULT_MAPPING_TYPE = "passthrough";
+
+    // state variable keys
+    public static final String EVENT_OFFSET_MAP = "event.offset.map";
+    public static final String EVENT_QUEUE_MAP = "event.queue.map";
 
     private GCSConstants() {
         // To prevent the initialization of class.

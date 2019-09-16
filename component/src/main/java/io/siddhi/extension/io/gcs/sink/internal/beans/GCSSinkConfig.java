@@ -17,13 +17,14 @@
  *
  */
 
-package io.siddhi.extension.io.gcs.sink;
+package io.siddhi.extension.io.gcs.sink.internal.beans;
 
 import com.google.cloud.storage.StorageClass;
 import io.siddhi.core.exception.SiddhiAppRuntimeException;
 import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.extension.io.gcs.util.GCSConfig;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
+import io.siddhi.query.api.exception.SiddhiAppValidationException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -36,7 +37,12 @@ public class GCSSinkConfig extends GCSConfig {
     private StorageClass storageClass;
     private boolean versioningEnabled;
     private String contentType;
+    private String mapType;
     private Map<String, String> bucketACLMap = new HashMap<>();
+    private int flushSize;
+    private int rotateInterval;
+    private int scheduledInterval;
+
 
     public GCSSinkConfig(OptionHolder optionHolder) {
         optionHolder.getStaticOptionsKeys().forEach(key -> {
@@ -60,6 +66,17 @@ public class GCSSinkConfig extends GCSConfig {
                 case GCSConstants.ENABLE_VERSIONING:
                     this.versioningEnabled = Boolean.parseBoolean(
                             optionHolder.validateAndGetStaticValue(GCSConstants.ENABLE_VERSIONING));
+                    break;
+                case GCSConstants.FLUSH_SIZE:
+                    this.flushSize = Integer.parseInt(optionHolder.validateAndGetStaticValue(GCSConstants.FLUSH_SIZE));
+                    break;
+                case GCSConstants.ROTATE_INTERVAL:
+                    this.rotateInterval = Integer
+                            .parseInt(optionHolder.validateAndGetStaticValue(GCSConstants.ROTATE_INTERVAL));
+                    break;
+                case GCSConstants.ROTATE_SCHEDULED_INTERVAL:
+                    this.scheduledInterval = Integer.parseInt(
+                            optionHolder.validateAndGetStaticValue(GCSConstants.ROTATE_SCHEDULED_INTERVAL));
                     break;
                 default:
                     // Throw error?
@@ -105,5 +122,25 @@ public class GCSSinkConfig extends GCSConfig {
 
     public Map<String, String> getBucketACLMap() {
         return bucketACLMap;
+    }
+
+    public String getMapType() {
+        return mapType;
+    }
+
+    public void setMapType(String mapType) {
+        this.mapType = mapType;
+    }
+
+    public int getFlushSize() {
+        return flushSize;
+    }
+
+    public int getRotateInterval() {
+        return rotateInterval;
+    }
+
+    public int getScheduledInterval() {
+        return scheduledInterval;
     }
 }

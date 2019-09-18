@@ -38,6 +38,7 @@ import io.siddhi.extension.io.gcs.sink.internal.publisher.EventPublisher;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
 import io.siddhi.query.api.annotation.Annotation;
 import io.siddhi.query.api.definition.StreamDefinition;
+import java.nio.ByteBuffer;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -152,7 +153,7 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
      */
     @Override
     public Class[] getSupportedInputEventClasses() {
-        return new Class[] {String.class, Event.class};
+        return new Class[] {String.class, Event.class, ByteBuffer.class};
     }
 
     /**

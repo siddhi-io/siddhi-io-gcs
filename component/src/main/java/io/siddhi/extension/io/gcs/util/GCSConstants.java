@@ -35,12 +35,25 @@ public class GCSConstants {
     public static final String FLUSH_SIZE = "flush.size";
     public static final String ROTATE_INTERVAL = "rotate.interval.ms";
     public static final String ROTATE_SCHEDULED_INTERVAL = "rotate.scheduled.interval.ms";
+    public static final String ENCLOSING_ELEMENT = "xml.enclosing.element";
+    public static final String TEXT_DELIMITER = "text.delimiter";
 
     public static final String DEFAULT_MAPPING_TYPE = "passthrough";
+    public static final String DEFAULT_ENCLOSING_ELEMENT = "Elements";
 
     // state variable keys
     public static final String EVENT_OFFSET_MAP = "event.offset.map";
     public static final String EVENT_QUEUE_MAP = "event.queue.map";
+
+    // content-types
+    public static final String TEXT_CONTENT_TYPE = "text/plain";
+    public static final String JSON_CONTENT_TYPE = "application/json";
+    public static final String XML_CONTENT_TYPE = "application/xml";
+
+    public static final int DEFAULT_FLUSH_SIZE = 1;
+    public static final int DEFAULT_SPAN_INTERVAL = -1;
+    public static final int DEFAULT_SCHEDULED_INTERVAL = -1;
+    public static final String DEFAULT_TEXT_DELIMITER = "~~~~~~~~~";
 
     private GCSConstants() {
         // To prevent the initialization of class.

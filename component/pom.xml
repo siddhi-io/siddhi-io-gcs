@@ -92,7 +92,10 @@
             <groupId>io.grpc</groupId>
             <artifactId>grpc-context</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
     </dependencies>
 
     <profiles>

@@ -20,8 +20,10 @@
 package io.siddhi.extension.io.gcs.sink.internal.util;
 
 import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
-import io.siddhi.extension.io.gcs.sink.internal.beans.PublisherObjectHolder;
+import io.siddhi.extension.io.gcs.sink.internal.beans.StateContainer;
+import io.siddhi.extension.io.gcs.sink.internal.content.ContentAggregator;
 import io.siddhi.extension.io.gcs.util.ServiceClient;
+
 import java.util.HashMap;
 
 /**
@@ -29,19 +31,19 @@ import java.util.HashMap;
  */
 public abstract class RotationStrategy {
 
-
     private GCSSinkConfig config;
     private ServiceClient client;
     private HashMap<String, Integer> eventOffsetMap = new HashMap<>();
-    private HashMap<String, PublisherObjectHolder> eventQueue = new HashMap<>();
+    private HashMap<String, ContentAggregator> eventQueue = new HashMap<>();
+    private StateContainer stateContainer = new StateContainer();
 
-    protected abstract void queueEvent(String objectName, Object event);
+    public abstract void queueEvent(String objectName, Object event);
 
     public HashMap<String, Integer> getEventOffsetMap() {
         return eventOffsetMap;
     }
 
-    public HashMap<String, PublisherObjectHolder> getEventQueue() {
+    public HashMap<String, ContentAggregator> getEventQueue() {
         return eventQueue;
     }
 
@@ -49,7 +51,7 @@ public abstract class RotationStrategy {
         this.eventOffsetMap = eventOffsetMap;
     }
 
-    public void setEventQueue(HashMap<String, PublisherObjectHolder> eventQueue) {
+    public void setEventQueue(HashMap<String, ContentAggregator> eventQueue) {
         this.eventQueue = eventQueue;
     }
 
@@ -67,5 +69,9 @@ public abstract class RotationStrategy {
 
     public void setClient(ServiceClient client) {
         this.client = client;
+    }
+
+    public StateContainer getStateContainer() {
+        return stateContainer;
     }
 }

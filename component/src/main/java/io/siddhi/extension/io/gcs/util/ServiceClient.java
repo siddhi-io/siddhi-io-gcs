@@ -2,6 +2,8 @@ package io.siddhi.extension.io.gcs.util;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Acl;
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.BucketInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
@@ -11,6 +13,7 @@ import org.apache.log4j.Logger;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -39,7 +42,7 @@ public class ServiceClient {
         if (config.getAuthFilePath() != null) {
             // Initialize the GCS client with the user authentication.
             try {
-                storage = StorageOptions.newBuilder()
+                gcsClient = StorageOptions.newBuilder()
                         .setCredentials(GoogleCredentials
                                 .fromStream(new FileInputStream(
                                         new File(config.getAuthFilePath())))).build().getService();
@@ -48,7 +51,7 @@ public class ServiceClient {
                         "check the Authorization credentials again", e);
             }
         } else {
-            storage = StorageOptions.getDefaultInstance().getService();
+            gcsClient = StorageOptions.getDefaultInstance().getService();
         }
 
         return gcsClient;
@@ -101,9 +104,36 @@ public class ServiceClient {
     /**
      * Logic to handle uploading of Objects
      */
-    public void uploadObject() {
+    public void uploadObject(String objectName, String objectContent) {
+        BlobId blobId = BlobId.of(config.getBucketName(), objectName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+                .setContentType(getContentType(((GCSSinkConfig) config).getMapType()))
+                .build();
 
+        try {
+            storage.create(blobInfo, objectContent.getBytes(StandardCharsets.UTF_8));
+        } catch (NullPointerException e) {
+            logger.error("Error", e);
+        }
     }
 
+    /**
+     * Returns the content type of the file
+     *
+     * @param mapType
+     * @return
+     */
+    private String getContentType(String mapType) {
+        switch (mapType.toLowerCase()) {
+            case "json":
+                return GCSConstants.JSON_CONTENT_TYPE;
+            case "xml":
+                return GCSConstants.XML_CONTENT_TYPE;
+            case "text":
+                return GCSConstants.TEXT_CONTENT_TYPE;
+            default:
+                return null;
+        }
+    }
 
 }

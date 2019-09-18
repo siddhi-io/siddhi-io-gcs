@@ -34,14 +34,10 @@ import io.siddhi.core.util.snapshot.state.StateFactory;
 import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
-import io.siddhi.extension.io.gcs.sink.internal.beans.PublisherObjectHolder;
 import io.siddhi.extension.io.gcs.sink.internal.publisher.EventPublisher;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
-import io.siddhi.extension.io.gcs.util.ServiceClient;
 import io.siddhi.query.api.annotation.Annotation;
 import io.siddhi.query.api.definition.StreamDefinition;
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.log4j.Logger;
 
 import java.util.HashMap;
@@ -49,30 +45,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * This is a sample class-level comment, explaining what the extension class does.
- */
-
-/**
- * Annotation of Siddhi Extension.
- * <pre><code>
- * eg:-
- * {@literal @}Extension(
- * name = "The name of the extension",
- * namespace = "The namespace of the extension",
- * description = "The description of the extension (optional).",
- * //Sink configurations
- * parameters = {
- * {@literal @}Parameter(name = "The name of the first parameter", type = "Supprted parameter types.
- *                              eg:{DataType.STRING,DataType.INT, DataType.LONG etc},dynamic=false ,optinal=true/false ,
- *                              if optional =true then assign default value according the type")
- *   System parameter is used to define common extension wide
- *              },
- * examples = {
- * {@literal @}Example({"Example of the first CustomExtension contain syntax and description.Here,
- *                      Syntax describe default mapping for SourceMapper and description describes
- *                      the output of according this syntax},
- *                      }
- * </code></pre>
+ * GCS Sink class
  */
 
 @Extension(
@@ -142,13 +115,20 @@ import java.util.Optional;
                         defaultValue = "-1",
                         description = "Maximum span of event time"
                 ),
-//                @Parameter(
-//                        name = GCSConstants.ROTATE_SCHEDULED_INTERVAL,
-//                        type = DataType.STRING,
-//                        optional = true,
-//                        defaultValue = "-1",
-//                        description = "Maximum span of event time from the first event"
-//                ),
+                @Parameter(
+                        name = GCSConstants.ENCLOSING_ELEMENT,
+                        type = DataType.STRING,
+                        optional = true,
+                        defaultValue = GCSConstants.DEFAULT_ENCLOSING_ELEMENT,
+                        description = "Enclosing element to contain the events in case an xml mapper is used"
+                ),
+                @Parameter(
+                        name = GCSConstants.TEXT_DELIMITER,
+                        type = DataType.STRING,
+                        optional = true,
+                        defaultValue = GCSConstants.DEFAULT_TEXT_DELIMITER,
+                        description = "Delimiter to be used as event separator when text mapper is used"
+                )
         },
         examples = {
                 @Example(
@@ -157,18 +137,10 @@ import java.util.Optional;
                 )
         }
 )
-
-// for more information refer https://siddhi-io.github.io/siddhi/documentation/siddhi-5.x/query-guide-5.x/#sink
-
 public class GCSSink extends Sink<GCSSink.GCSSinkState> {
-
-    private GCSSinkConfig gcsSinkConfig;
-    private OptionHolder optionHolder;
-    private EventPublisher eventPublisher;
-    List<String> payloadObjects = new ArrayList<>();
-
     private static final Logger logger = Logger.getLogger(GCSSink.class);
 
+    private EventPublisher eventPublisher;
 
     /**
      * Returns the list of classes which this sink can consume.
@@ -207,11 +179,13 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
      * @return StateFactory for the Function which contains logic for the updated state based on arrived events.
      */
     @Override
-    protected StateFactory<GCSSinkState> init(StreamDefinition streamDefinition, OptionHolder optionHolder, ConfigReader configReader,
+    protected StateFactory<GCSSinkState> init(StreamDefinition streamDefinition, OptionHolder optionHolder,
+                                              ConfigReader configReader,
                                               SiddhiAppContext siddhiAppContext) {
-        this.gcsSinkConfig = new GCSSinkConfig(optionHolder);
-        this.gcsSinkConfig.setMapType(extractMapType(streamDefinition));
-        this.optionHolder = optionHolder;
+        GCSSinkConfig gcsSinkConfig = new GCSSinkConfig(optionHolder, siddhiAppContext.getScheduledExecutorService());
+        gcsSinkConfig.setMapType(extractMapType(streamDefinition));
+        this.eventPublisher = new EventPublisher(gcsSinkConfig, optionHolder);
+
 
         return GCSSinkState::new;
     }
@@ -227,8 +201,9 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
      *                                        such that the  system will take care retrying for connection
      */
     @Override
-    public void publish(Object payload, DynamicOptions dynamicOptions, GCSSinkState state) throws ConnectionUnavailableException {
-        payloadObjects.add(payload.toString());
+    public void publish(Object payload, DynamicOptions dynamicOptions, GCSSinkState state)
+                                                                throws ConnectionUnavailableException {
+        eventPublisher.publish(payload, dynamicOptions);
     }
 
 
@@ -297,16 +272,28 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
         public Map<String, Object> snapshot() {
             Map<String, Object> state = new HashMap<>();
 
-            state.put(GCSConstants.EVENT_OFFSET_MAP, eventPublisher.getEventOffsetMap());
-            state.put(GCSConstants.EVENT_QUEUE_MAP, eventPublisher.getEventQueue());
+
+            eventPublisher.getStateContainer().getLock();
+
+            state.put(GCSConstants.EVENT_OFFSET_MAP, eventPublisher.getStateContainer().getEventOffsetMap());
+            state.put(GCSConstants.EVENT_QUEUE_MAP, eventPublisher.getStateContainer().getQueuedEventMap());
+
+            eventPublisher.getStateContainer().releaseLock();
 
             return state;
         }
 
         @Override
         public void restore(Map<String, Object> state) {
-            eventPublisher.setEventOffsetMap((HashMap<String, Integer>) state.get(GCSConstants.EVENT_OFFSET_MAP));
-            eventPublisher.setEventQueue((HashMap<String, PublisherObjectHolder>) state.get(GCSConstants.EVENT_QUEUE_MAP));
+
+            eventPublisher.getStateContainer().getLock();
+
+            eventPublisher.getStateContainer()
+                    .setEventOffsetMap((HashMap<String, Integer>) state.get(GCSConstants.EVENT_OFFSET_MAP));
+            eventPublisher.getStateContainer()
+                    .setEventOffsetMap((HashMap<String, Integer>) state.get(GCSConstants.EVENT_QUEUE_MAP));
+
+            eventPublisher.getStateContainer().releaseLock();
         }
     }
 

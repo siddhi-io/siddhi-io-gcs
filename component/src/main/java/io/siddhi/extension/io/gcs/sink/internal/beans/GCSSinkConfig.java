@@ -24,9 +24,9 @@ import io.siddhi.core.exception.SiddhiAppRuntimeException;
 import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.extension.io.gcs.util.GCSConfig;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
-import io.siddhi.query.api.exception.SiddhiAppValidationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,12 +39,16 @@ public class GCSSinkConfig extends GCSConfig {
     private String contentType;
     private String mapType;
     private Map<String, String> bucketACLMap = new HashMap<>();
-    private int flushSize;
-    private int rotateInterval;
-    private int scheduledInterval;
+    private int flushSize = GCSConstants.DEFAULT_FLUSH_SIZE;
+    private int rotateInterval = GCSConstants.DEFAULT_SPAN_INTERVAL;
+    private int scheduledInterval = GCSConstants.DEFAULT_SCHEDULED_INTERVAL;
+    private ScheduledExecutorService scheduledExecutorService;
+    private String enclosingElement = GCSConstants.DEFAULT_ENCLOSING_ELEMENT;
+    private String textDelimiter = GCSConstants.DEFAULT_TEXT_DELIMITER;
 
 
-    public GCSSinkConfig(OptionHolder optionHolder) {
+    public GCSSinkConfig(OptionHolder optionHolder, ScheduledExecutorService scheduledExecutorService) {
+        this.scheduledExecutorService = scheduledExecutorService;
         optionHolder.getStaticOptionsKeys().forEach(key -> {
             switch (key.toLowerCase()) {
                 case GCSConstants.BUCKET_NAME:
@@ -77,6 +81,13 @@ public class GCSSinkConfig extends GCSConfig {
                 case GCSConstants.ROTATE_SCHEDULED_INTERVAL:
                     this.scheduledInterval = Integer.parseInt(
                             optionHolder.validateAndGetStaticValue(GCSConstants.ROTATE_SCHEDULED_INTERVAL));
+                    break;
+                case GCSConstants.ENCLOSING_ELEMENT:
+                    this.enclosingElement =
+                            optionHolder.validateAndGetStaticValue(GCSConstants.ENCLOSING_ELEMENT);
+                    break;
+                case GCSConstants.TEXT_DELIMITER:
+                    this.textDelimiter = optionHolder.validateAndGetStaticValue(GCSConstants.TEXT_DELIMITER);
                     break;
                 default:
                     // Throw error?
@@ -142,5 +153,30 @@ public class GCSSinkConfig extends GCSConfig {
 
     public int getScheduledInterval() {
         return scheduledInterval;
+    }
+
+    public ScheduledExecutorService getScheduledExecutorService() {
+        return scheduledExecutorService;
+    }
+
+    public String getEnclosingElement() {
+        return enclosingElement;
+    }
+
+    public String getTextDelimiter() {
+        return textDelimiter;
+    }
+
+    public String getFiltype() {
+        switch (mapType.toLowerCase()) {
+            case "xml":
+                return "xml";
+            case "json":
+                return "json";
+            case "text":
+                return "txt";
+            default:
+                return "bin";
+        }
     }
 }

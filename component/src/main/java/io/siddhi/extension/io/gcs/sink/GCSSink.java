@@ -203,7 +203,7 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
      */
     @Override
     public void publish(Object payload, DynamicOptions dynamicOptions, GCSSinkState state)
-                                                                throws ConnectionUnavailableException {
+            throws ConnectionUnavailableException {
         eventPublisher.publish(payload, dynamicOptions);
     }
 
@@ -238,6 +238,11 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
 
     }
 
+    /**
+     * Returns the map type of a given Stream definition of a Sink
+     * @param streamDefinition
+     * @return
+     */
     private String extractMapType(StreamDefinition streamDefinition) {
         Optional<Annotation> mapAnnotation = streamDefinition.getAnnotations()
                 .stream()
@@ -249,7 +254,8 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
                 .filter(e -> e.getName().equals("map"))
                 .findFirst();
 
-        return mapAnnotation.map(annotation -> annotation.getElement("type")).orElse(GCSConstants.DEFAULT_MAPPING_TYPE);
+        return mapAnnotation.map(annotation -> annotation.getElement("type"))
+                                                .orElse(GCSConstants.DEFAULT_MAPPING_TYPE);
     }
 
     /**
@@ -273,28 +279,34 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
         public Map<String, Object> snapshot() {
             Map<String, Object> state = new HashMap<>();
 
-
-            eventPublisher.getStateContainer().getLock();
-
-            state.put(GCSConstants.EVENT_OFFSET_MAP, eventPublisher.getStateContainer().getEventOffsetMap());
-            state.put(GCSConstants.EVENT_QUEUE_MAP, eventPublisher.getStateContainer().getQueuedEventMap());
-
-            eventPublisher.getStateContainer().releaseLock();
-
+            try {
+                if (eventPublisher.getStateContainer().lock()) {
+                    logger.info("locked");
+                    state.put(GCSConstants.EVENT_OFFSET_MAP, eventPublisher.getStateContainer().getEventOffsetMap());
+                    state.put(GCSConstants.EVENT_QUEUE_MAP, eventPublisher.getStateContainer().getQueuedEventMap());
+                }
+            } finally {
+                eventPublisher.getStateContainer().releaseLock();
+                logger.info("unlocked");
+            }
             return state;
         }
 
         @Override
         public void restore(Map<String, Object> state) {
 
-            eventPublisher.getStateContainer().getLock();
-
-            eventPublisher.getStateContainer()
-                    .setEventOffsetMap((HashMap<String, Integer>) state.get(GCSConstants.EVENT_OFFSET_MAP));
-            eventPublisher.getStateContainer()
-                    .setEventOffsetMap((HashMap<String, Integer>) state.get(GCSConstants.EVENT_QUEUE_MAP));
-
-            eventPublisher.getStateContainer().releaseLock();
+            try {
+                if (eventPublisher.getStateContainer().lock()) {
+                    logger.info("locked");
+                    eventPublisher.getStateContainer()
+                            .setEventOffsetMap((HashMap<String, Integer>) state.get(GCSConstants.EVENT_OFFSET_MAP));
+                    eventPublisher.getStateContainer()
+                            .setEventOffsetMap((HashMap<String, Integer>) state.get(GCSConstants.EVENT_QUEUE_MAP));
+                }
+            } finally {
+                eventPublisher.getStateContainer().releaseLock();
+                logger.info("unlocked");
+            }
         }
     }
 

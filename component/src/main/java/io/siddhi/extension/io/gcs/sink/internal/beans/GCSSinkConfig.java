@@ -40,7 +40,7 @@ public class GCSSinkConfig extends GCSConfig {
     private String mapType;
     private Map<String, String> bucketACLMap = new HashMap<>();
     private int flushSize = GCSConstants.DEFAULT_FLUSH_SIZE;
-    private int rotateInterval = GCSConstants.DEFAULT_SPAN_INTERVAL;
+    private long rotateInterval = GCSConstants.DEFAULT_SPAN_INTERVAL;
     private int scheduledInterval = GCSConstants.DEFAULT_SCHEDULED_INTERVAL;
     private ScheduledExecutorService scheduledExecutorService;
     private String enclosingElement = GCSConstants.DEFAULT_ENCLOSING_ELEMENT;
@@ -75,8 +75,8 @@ public class GCSSinkConfig extends GCSConfig {
                     this.flushSize = Integer.parseInt(optionHolder.validateAndGetStaticValue(GCSConstants.FLUSH_SIZE));
                     break;
                 case GCSConstants.ROTATE_INTERVAL:
-                    this.rotateInterval = Integer
-                            .parseInt(optionHolder.validateAndGetStaticValue(GCSConstants.ROTATE_INTERVAL));
+                    this.rotateInterval = Long
+                            .parseLong(optionHolder.validateAndGetStaticValue(GCSConstants.ROTATE_INTERVAL));
                     break;
                 case GCSConstants.ROTATE_SCHEDULED_INTERVAL:
                     this.scheduledInterval = Integer.parseInt(
@@ -147,7 +147,7 @@ public class GCSSinkConfig extends GCSConfig {
         return flushSize;
     }
 
-    public int getRotateInterval() {
+    public long getRotateInterval() {
         return rotateInterval;
     }
 

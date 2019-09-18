@@ -5,19 +5,16 @@ import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
 import io.siddhi.extension.io.gcs.sink.internal.beans.StateContainer;
-import io.siddhi.extension.io.gcs.sink.internal.content.ContentAggregator;
-import io.siddhi.extension.io.gcs.sink.internal.strategies.CountAndSpanBasedRotationStrategy;
 import io.siddhi.extension.io.gcs.sink.internal.strategies.CountBasedRotationStrategy;
+import io.siddhi.extension.io.gcs.sink.internal.strategies.RotateIntervalStrategy;
 import io.siddhi.extension.io.gcs.sink.internal.util.RotationStrategy;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
 import io.siddhi.extension.io.gcs.util.ServiceClient;
-import java.util.HashMap;
 
 /**
  * Contains the logic for Handling Event publishing to GCS
  */
 public class EventPublisher {
-    private ServiceClient serviceClient;
     private GCSSinkConfig config;
     private OptionHolder optionHolder;
     private RotationStrategy rotationStrategy;
@@ -30,32 +27,16 @@ public class EventPublisher {
     }
 
     public void initializeServiceClient() {
-        serviceClient = new ServiceClient(this.config);
+        ServiceClient serviceClient = new ServiceClient(this.config);
         rotationStrategy.setClient(serviceClient);
     }
 
     private RotationStrategy getRotationStrategy() {
         if (config.getFlushSize() > 0 && config.getRotateInterval() > 0) {
-            return new CountAndSpanBasedRotationStrategy();
+            return new RotateIntervalStrategy(config);
         } else {
             return new CountBasedRotationStrategy(config);
         }
-    }
-
-    public HashMap<String, Integer> getEventOffsetMap() {
-        return rotationStrategy.getEventOffsetMap();
-    }
-
-    public void setEventOffsetMap(HashMap<String, Integer> eventOffsetMap) {
-        rotationStrategy.setEventOffsetMap(eventOffsetMap);
-    }
-
-    public HashMap<String, ContentAggregator> getEventQueue() {
-        return rotationStrategy.getEventQueue();
-    }
-
-    public void setEventQueue(HashMap<String, ContentAggregator> eventQueue) {
-        rotationStrategy.setEventQueue(eventQueue);
     }
 
     public StateContainer getStateContainer() {

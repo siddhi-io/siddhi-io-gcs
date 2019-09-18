@@ -38,9 +38,4 @@ public class BinaryContentAggregator implements ContentAggregator {
         return eventCount;
     }
 
-    private byte[] getByteArrayFromByteBuffer(ByteBuffer byteBuffer) {
-        byte[] bytesArray = new byte[byteBuffer.remaining()];
-        byteBuffer.get(bytesArray, 0, bytesArray.length);
-        return bytesArray;
-    }
 }

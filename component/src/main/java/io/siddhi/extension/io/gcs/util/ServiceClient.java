@@ -131,6 +131,10 @@ public class ServiceClient {
                 return GCSConstants.XML_CONTENT_TYPE;
             case "text":
                 return GCSConstants.TEXT_CONTENT_TYPE;
+            case "avro":
+                return GCSConstants.BINARY_CONTENT_TYPE;
+            case "binary":
+                return GCSConstants.BINARY_CONTENT_TYPE;
             default:
                 return null;
         }

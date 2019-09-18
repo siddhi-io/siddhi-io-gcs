@@ -15,6 +15,10 @@ public class ContentAggregatorFactory {
                 return new XMLContentAggregator(config.getEnclosingElement());
             case "text":
                 return new TextContentAggregator(config.getTextDelimiter());
+            case "binary":
+                return new BinaryContentAggregator(config.getTextDelimiter());
+            case "avro":
+                return new BinaryContentAggregator(config.getTextDelimiter());
             default:
                 // not a supported ContentAggregator
                 return null;

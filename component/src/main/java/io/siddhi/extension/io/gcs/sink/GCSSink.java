@@ -38,9 +38,9 @@ import io.siddhi.extension.io.gcs.sink.internal.publisher.EventPublisher;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
 import io.siddhi.query.api.annotation.Annotation;
 import io.siddhi.query.api.definition.StreamDefinition;
-import java.nio.ByteBuffer;
 import org.apache.log4j.Logger;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -128,7 +128,7 @@ import java.util.Optional;
                         type = DataType.STRING,
                         optional = true,
                         defaultValue = GCSConstants.DEFAULT_TEXT_DELIMITER,
-                        description = "Delimiter to be used as event separator when text mapper is used"
+                        description = "Delimiter to be used as event separator when text/binary mapper is used"
                 )
         },
         examples = {

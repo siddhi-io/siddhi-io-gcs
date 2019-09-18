@@ -49,6 +49,7 @@ public class GCSConstants {
     public static final String TEXT_CONTENT_TYPE = "text/plain";
     public static final String JSON_CONTENT_TYPE = "application/json";
     public static final String XML_CONTENT_TYPE = "application/xml";
+    public static final String BINARY_CONTENT_TYPE = "application/octet-stream";
 
     public static final int DEFAULT_FLUSH_SIZE = 1;
     public static final int DEFAULT_SPAN_INTERVAL = -1;

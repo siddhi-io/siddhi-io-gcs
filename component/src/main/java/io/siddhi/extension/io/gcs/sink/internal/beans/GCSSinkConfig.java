@@ -175,6 +175,10 @@ public class GCSSinkConfig extends GCSConfig {
                 return "json";
             case "text":
                 return "txt";
+            case "avro":
+                return "bin";
+            case "binary":
+                return "bin";
             default:
                 return "bin";
         }

@@ -1,9 +1,11 @@
 package io.siddhi.extension.io.gcs.sink.internal.content;
 
+import java.io.Serializable;
+
 /**
- * ContentAggregator for sinks with text mapper
+ * ContentAggregator for sinks with Text mapper
  */
-public class TextContentAggregator implements ContentAggregator {
+public class TextContentAggregator implements ContentAggregator, Serializable {
 
     private int eventCount;
     private String delimiter;
@@ -31,5 +33,25 @@ public class TextContentAggregator implements ContentAggregator {
     @Override
     public int getQueuedSize() {
         return eventCount;
+    }
+
+    public int getEventCount() {
+        return eventCount;
+    }
+
+    public void setEventCount(int eventCount) {
+        this.eventCount = eventCount;
+    }
+
+    public String getDelimiter() {
+        return delimiter;
+    }
+
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
+
+    public void setContentString(String contentString) {
+        this.contentString = contentString;
     }
 }

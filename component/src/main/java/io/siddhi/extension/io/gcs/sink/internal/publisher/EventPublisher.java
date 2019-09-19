@@ -32,7 +32,7 @@ public class EventPublisher {
     }
 
     private RotationStrategy getRotationStrategy() {
-        if (config.getFlushSize() > 0 && config.getRotateInterval() > 0) {
+        if (config.getRotateInterval() > 0) {
             return new RotateIntervalStrategy(config);
         } else {
             return new CountBasedRotationStrategy(config);

@@ -4,9 +4,9 @@ import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
 import io.siddhi.extension.io.gcs.sink.internal.content.ContentAggregatorFactory;
 import io.siddhi.extension.io.gcs.sink.internal.publisher.PublisherTask;
 import io.siddhi.extension.io.gcs.sink.internal.util.RotationStrategy;
-import org.apache.log4j.Logger;
+import java.util.HashMap;
+import java.util.concurrent.Future;
 
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,9 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class RotateIntervalStrategy extends RotationStrategy {
 
     private GCSSinkConfig config;
-    private ScheduledFuture future;
-
-    private static final Logger logger = Logger.getLogger(RotateIntervalStrategy.class);
+    private HashMap<String, Future> scheduledFuturesMap = new HashMap<>();
 
     public RotateIntervalStrategy(GCSSinkConfig config) {
         this.config = config;
@@ -31,7 +29,6 @@ public class RotateIntervalStrategy extends RotationStrategy {
             getStateContainer().lock();
 
             if (getStateContainer().getQueuedEventMap().containsKey(objectName)) {
-
                 getStateContainer().getQueuedEventMap().get(objectName).addEvent(event);
                 getStateContainer().getEventOffsetMap().put(objectName,
                         getStateContainer().getEventOffsetMap().get(objectName).intValue() + 1);
@@ -47,16 +44,10 @@ public class RotateIntervalStrategy extends RotationStrategy {
             getStateContainer().releaseLock();
         }
 
-        if (future == null || future.isDone()) {
-            try {
-                future = config.getScheduledExecutorService()
-                        .schedule(new PublisherTask(objectName, getStateContainer(), config,
-                                getClient()), config.getRotateInterval(), TimeUnit.MILLISECONDS);
-            } catch (NullPointerException e) {
-                logger.error("error", e);
-            }
-
-
+        if (!scheduledFuturesMap.containsKey(objectName) || scheduledFuturesMap.get(objectName).isDone()) {
+            scheduledFuturesMap.put(objectName, config.getScheduledExecutorService()
+                    .schedule(new PublisherTask(objectName, getStateContainer(), config,
+                            getClient()), config.getRotateInterval(), TimeUnit.MILLISECONDS));
         }
 
     }

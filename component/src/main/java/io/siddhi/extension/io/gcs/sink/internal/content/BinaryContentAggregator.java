@@ -1,13 +1,14 @@
 package io.siddhi.extension.io.gcs.sink.internal.content;
 
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**
  * Content Aggregator for Binary event mappers
  */
-public class BinaryContentAggregator implements ContentAggregator {
+public class BinaryContentAggregator implements ContentAggregator, Serializable {
     private int eventCount;
     private String contentDelimiter;
     private String contentString;
@@ -38,4 +39,23 @@ public class BinaryContentAggregator implements ContentAggregator {
         return eventCount;
     }
 
+    public int getEventCount() {
+        return eventCount;
+    }
+
+    public void setEventCount(int eventCount) {
+        this.eventCount = eventCount;
+    }
+
+    public String getContentDelimiter() {
+        return contentDelimiter;
+    }
+
+    public void setContentDelimiter(String contentDelimiter) {
+        this.contentDelimiter = contentDelimiter;
+    }
+
+    public void setContentString(String contentString) {
+        this.contentString = contentString;
+    }
 }

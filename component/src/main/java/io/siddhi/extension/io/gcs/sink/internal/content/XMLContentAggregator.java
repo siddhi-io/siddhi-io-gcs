@@ -1,9 +1,11 @@
 package io.siddhi.extension.io.gcs.sink.internal.content;
 
+import java.io.Serializable;
+
 /**
  * ContentAggregator for sinks with xml mapper
  */
-public class XMLContentAggregator implements ContentAggregator {
+public class XMLContentAggregator implements ContentAggregator, Serializable {
     private int eventCount;
     private String enclosingElement;
     private String contentString;
@@ -27,5 +29,25 @@ public class XMLContentAggregator implements ContentAggregator {
     @Override
     public int getQueuedSize() {
         return eventCount;
+    }
+
+    public int getEventCount() {
+        return eventCount;
+    }
+
+    public void setEventCount(int eventCount) {
+        this.eventCount = eventCount;
+    }
+
+    public String getEnclosingElement() {
+        return enclosingElement;
+    }
+
+    public void setEnclosingElement(String enclosingElement) {
+        this.enclosingElement = enclosingElement;
+    }
+
+    public void setContentString(String contentString) {
+        this.contentString = contentString;
     }
 }

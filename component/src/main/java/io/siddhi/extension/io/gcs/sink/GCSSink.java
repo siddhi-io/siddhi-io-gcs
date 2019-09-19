@@ -148,7 +148,7 @@ import java.util.Optional;
                                 "bucket.name='charukak-bucket'," +
                                 "storage.class='multi-regional'," +
                                 "flush.size=\"3\"," +
-                                "object.name='test-object-{{test}}'," +
+                                "object.name='test-object-{{suffix}}'," +
                                 "rotate.interval.ms=\"60000\", @map(type='text') )" +
                                 "define stream outStream(key string, payload string, suffix string);",
                         description = "Above example demonstrate how an GCS sink is getting configured in order to " +

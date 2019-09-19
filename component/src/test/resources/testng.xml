@@ -5,8 +5,7 @@
 <suite name="Siddhi-IO-GCS-Test-Suite">
     <test name="Siddhi-io-google cloud storage-tests" enabled="true" preserve-order="true" parallel="false">
         <classes>
-            <class name="io.siddhi.extension.io.gcs.sink.TestCaseOfGCSSink"/>
-            <class name="io.siddhi.extension.io.gcs.source.TestCaseOfGCSSource"/>
+<!--            <class name="io.siddhi.extension.io.gcs.sink.TestCaseOfGCSSink"/>-->
         </classes>
     </test>
 </suite>

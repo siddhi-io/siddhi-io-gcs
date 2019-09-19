@@ -144,9 +144,9 @@ import java.util.Optional;
         examples = {
                 @Example(
                         syntax = "@sink(type='google-cloud-storage'," +
-                                "credential.provider.file.path='/Users/charukak/Downloads/mfp-f1a16bac21ad.json'," +
-                                "bucket.name='charukak-bucket'," +
-                                "storage.class='multi-regional'," +
+                                "credential.provider.file.path='<Auth.file.path>'," +
+                                "bucket.name='<bucke.name>'," +
+                                "storage.class='MULTI-REGIONAL'," +
                                 "flush.size=\"3\"," +
                                 "object.name='test-object-{{suffix}}'," +
                                 "rotate.interval.ms=\"60000\", @map(type='text') )" +

@@ -20,7 +20,6 @@
 package io.siddhi.extension.io.gcs.sink.internal.beans;
 
 import com.google.cloud.storage.StorageClass;
-import io.siddhi.core.exception.SiddhiAppRuntimeException;
 import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.extension.io.gcs.util.GCSConfig;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
@@ -45,7 +44,7 @@ public class GCSSinkConfig extends GCSConfig {
     private ScheduledExecutorService scheduledExecutorService;
     private String enclosingElement = GCSConstants.DEFAULT_ENCLOSING_ELEMENT;
     private String textDelimiter = GCSConstants.DEFAULT_TEXT_DELIMITER;
-
+    private int flushTimeout;
 
     public GCSSinkConfig(OptionHolder optionHolder, ScheduledExecutorService scheduledExecutorService) {
         this.scheduledExecutorService = scheduledExecutorService;
@@ -64,7 +63,7 @@ public class GCSSinkConfig extends GCSConfig {
                     this.setBucketACLMap(optionHolder.validateAndGetStaticValue(GCSConstants.BUCKET_ACL));
                     break;
                 case GCSConstants.STORAGE_CLASS:
-                    this.storageClass = getStorageClassByName(
+                    this.storageClass = StorageClass.valueOf(
                             optionHolder.validateAndGetStaticValue(GCSConstants.STORAGE_CLASS));
                     break;
                 case GCSConstants.ENABLE_VERSIONING:
@@ -72,22 +71,34 @@ public class GCSSinkConfig extends GCSConfig {
                             optionHolder.validateAndGetStaticValue(GCSConstants.ENABLE_VERSIONING));
                     break;
                 case GCSConstants.FLUSH_SIZE:
-                    this.flushSize = Integer.parseInt(optionHolder.validateAndGetStaticValue(GCSConstants.FLUSH_SIZE));
+                    this.flushSize = Integer.parseInt(optionHolder
+                            .validateAndGetStaticValue(GCSConstants.FLUSH_SIZE,
+                                    String.valueOf(GCSConstants.DEFAULT_FLUSH_SIZE)));
                     break;
-                case GCSConstants.ROTATE_INTERVAL:
+                case GCSConstants.ROTATE_INTERVAL_MS:
                     this.rotateInterval = Long
-                            .parseLong(optionHolder.validateAndGetStaticValue(GCSConstants.ROTATE_INTERVAL));
+                            .parseLong(optionHolder
+                                    .validateAndGetStaticValue(GCSConstants.ROTATE_INTERVAL_MS,
+                                            String.valueOf(GCSConstants.DEFAULT_SPAN_INTERVAL)));
                     break;
                 case GCSConstants.ROTATE_SCHEDULED_INTERVAL:
                     this.scheduledInterval = Integer.parseInt(
-                            optionHolder.validateAndGetStaticValue(GCSConstants.ROTATE_SCHEDULED_INTERVAL));
+                            optionHolder.validateAndGetStaticValue(GCSConstants.ROTATE_SCHEDULED_INTERVAL,
+                                    String.valueOf(GCSConstants.DEFAULT_SCHEDULED_INTERVAL)));
                     break;
                 case GCSConstants.ENCLOSING_ELEMENT:
                     this.enclosingElement =
-                            optionHolder.validateAndGetStaticValue(GCSConstants.ENCLOSING_ELEMENT);
+                            optionHolder.validateAndGetStaticValue(GCSConstants.ENCLOSING_ELEMENT,
+                                    GCSConstants.DEFAULT_ENCLOSING_ELEMENT);
                     break;
                 case GCSConstants.TEXT_DELIMITER:
-                    this.textDelimiter = optionHolder.validateAndGetStaticValue(GCSConstants.TEXT_DELIMITER);
+                    this.textDelimiter = optionHolder
+                            .validateAndGetStaticValue(GCSConstants.TEXT_DELIMITER,
+                                                                            GCSConstants.DEFAULT_TEXT_DELIMITER);
+                    break;
+                case GCSConstants.FLUSH_TIMEOUT:
+                    this.flushTimeout = Integer.parseInt(optionHolder
+                            .validateAndGetStaticValue(GCSConstants.FLUSH_TIMEOUT, GCSConstants.DEFAULT_FLUSH_TIMEOUT));
                     break;
                 default:
                     // Throw error?
@@ -95,27 +106,13 @@ public class GCSSinkConfig extends GCSConfig {
         });
     }
 
-    private StorageClass getStorageClassByName(String storageClassName) {
-        switch (storageClassName.toLowerCase()) {
-            case "multi-regional":
-                return StorageClass.MULTI_REGIONAL;
-            case "regional":
-                return StorageClass.REGIONAL;
-            case "nearline":
-                return StorageClass.NEARLINE;
-            case "coldline":
-                return StorageClass.COLDLINE;
-            default:
-                // not a supported version of StorageClass
-                throw new SiddhiAppRuntimeException("Invalid Configuration provided for Storage class");
-        }
-    }
-
     private void setBucketACLMap(String bucketAclString) {
         Matcher matcher = Pattern.compile("[a-zA-Z.@0-9]+:[a-zA-Z]+").matcher(bucketAclString);
 
-        while (matcher.find()) {
-            this.bucketACLMap.put(matcher.group().split(":")[0], matcher.group().split(":")[1]);
+        if (matcher.find()) {
+            do {
+                this.bucketACLMap.put(matcher.group().split(":")[0], matcher.group().split(":")[1]);
+            } while (matcher.find());
         }
     }
 
@@ -125,6 +122,10 @@ public class GCSSinkConfig extends GCSConfig {
 
     public boolean isVersioningEnabled() {
         return versioningEnabled;
+    }
+
+    public int getFlushTimeout() {
+        return flushTimeout;
     }
 
     public String getContentType() {
@@ -167,7 +168,7 @@ public class GCSSinkConfig extends GCSConfig {
         return textDelimiter;
     }
 
-    public String getFiltype() {
+    public String getFileType() {
         switch (mapType.toLowerCase()) {
             case "xml":
                 return "xml";

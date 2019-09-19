@@ -6,6 +6,7 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.BucketInfo;
 import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
 import org.apache.log4j.Logger;
@@ -49,9 +50,17 @@ public class ServiceClient {
             } catch (IOException e) {
                 logger.error("Authentication with Google Cloud Storage failed please " +
                         "check the Authorization credentials again", e);
+            } catch (StorageException e) {
+                logger.error("Error while connecting to Google Cloud Storage service please check the" +
+                        " connection and provided configurations", e);
             }
         } else {
-            gcsClient = StorageOptions.getDefaultInstance().getService();
+            try {
+                gcsClient = StorageOptions.getDefaultInstance().getService();
+            } catch (StorageException e) {
+                logger.error("Error while connecting to Google Cloud Storage service please check the" +
+                        " connection and provided configurations", e);
+            }
         }
 
         return gcsClient;
@@ -112,9 +121,11 @@ public class ServiceClient {
 
         try {
             storage.create(blobInfo, objectContent.getBytes(StandardCharsets.UTF_8));
-        } catch (NullPointerException e) {
-            logger.error("Error", e);
+        } catch (StorageException e) {
+            logger.error("Error while uploading object to GCS bucket", e);
         }
+
+
     }
 
     /**

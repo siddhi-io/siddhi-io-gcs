@@ -13,7 +13,7 @@ import java.util.List;
  * ContentAggregator for sinks with json mapper
  */
 public class JSONContentAggregator implements ContentAggregator, Serializable {
-    ArrayList<Object> eventList = new ArrayList<>();
+    private ArrayList<Object> eventList = new ArrayList<>();
 
     @Override
     public void addEvent(Object payload) {

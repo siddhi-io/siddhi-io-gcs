@@ -33,7 +33,8 @@ public class GCSConstants {
     public static final String BUCKET_ACL = "bucket.acl";
     public static final String OBJECT_NAME = "object.name";
     public static final String FLUSH_SIZE = "flush.size";
-    public static final String ROTATE_INTERVAL = "rotate.interval.ms";
+    public static final String FLUSH_TIMEOUT = "flush.timeout";
+    public static final String ROTATE_INTERVAL_MS = "rotate.interval.ms";
     public static final String ROTATE_SCHEDULED_INTERVAL = "rotate.scheduled.interval.ms";
     public static final String ENCLOSING_ELEMENT = "xml.enclosing.element";
     public static final String TEXT_DELIMITER = "text.delimiter";
@@ -54,6 +55,7 @@ public class GCSConstants {
     public static final int DEFAULT_FLUSH_SIZE = 1;
     public static final int DEFAULT_SPAN_INTERVAL = -1;
     public static final int DEFAULT_SCHEDULED_INTERVAL = -1;
+    public static final String DEFAULT_FLUSH_TIMEOUT = "15000";
     public static final String DEFAULT_TEXT_DELIMITER = "~~~~~~~~~";
 
     private GCSConstants() {

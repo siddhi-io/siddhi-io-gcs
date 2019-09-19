@@ -26,19 +26,19 @@ public class RotateIntervalStrategy extends RotationStrategy {
 
 
         try {
-            getStateContainer().lock();
+            if (getStateContainer().lock()) {
+                if (getStateContainer().getQueuedEventMap().containsKey(objectName)) {
+                    getStateContainer().getQueuedEventMap().get(objectName).addEvent(event);
+                    getStateContainer().getEventOffsetMap().put(objectName,
+                            getStateContainer().getEventOffsetMap().get(objectName).intValue() + 1);
 
-            if (getStateContainer().getQueuedEventMap().containsKey(objectName)) {
-                getStateContainer().getQueuedEventMap().get(objectName).addEvent(event);
-                getStateContainer().getEventOffsetMap().put(objectName,
-                        getStateContainer().getEventOffsetMap().get(objectName).intValue() + 1);
 
-
-            } else {
-                getStateContainer().getQueuedEventMap().put(objectName,
-                        ContentAggregatorFactory.getContentGenerator(config));
-                getStateContainer().getQueuedEventMap().get(objectName).addEvent(event);
-                getStateContainer().getEventOffsetMap().put(objectName, Integer.valueOf(1));
+                } else {
+                    getStateContainer().getQueuedEventMap().put(objectName,
+                            ContentAggregatorFactory.getContentGenerator(config));
+                    getStateContainer().getQueuedEventMap().get(objectName).addEvent(event);
+                    getStateContainer().getEventOffsetMap().put(objectName, Integer.valueOf(1));
+                }
             }
         } finally {
             getStateContainer().releaseLock();

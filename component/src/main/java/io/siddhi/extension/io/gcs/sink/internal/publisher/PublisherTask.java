@@ -31,17 +31,16 @@ public class PublisherTask implements Runnable {
 
         try {
             if (stateContainer.lock()) {
-                logger.info("Locked");
                 String fullObjectName;
 
                 if (objectName.matches(String.format(".%s$", config.getMapType()))) {
                     fullObjectName = objectName.split(String.format(".%s$", config.getMapType()))[0]
                             .concat(stateContainer.getEventOffsetMap().get(objectName).toString())
-                            .concat(String.format(".%s", config.getFiltype()));
+                            .concat(String.format(".%s", config.getFileType()));
                 } else {
                     fullObjectName = objectName
                             .concat(String.format("_%s", stateContainer.getEventOffsetMap().get(objectName).toString()))
-                            .concat(String.format(".%s", config.getFiltype()));
+                            .concat(String.format(".%s", config.getFileType()));
                 }
 
                 client.uploadObject(fullObjectName, stateContainer.getQueuedEventMap()
@@ -50,9 +49,8 @@ public class PublisherTask implements Runnable {
                 stateContainer.getQueuedEventMap().put(objectName, ContentAggregatorFactory
                                                                                 .getContentGenerator(config));
             }
-        } finally {
+        }  finally {
             stateContainer.releaseLock();
-            logger.info("Unlocked");
         }
     }
 }

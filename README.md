@@ -1,9 +1,5 @@
-﻿siddhi-io-gcs
-======================================
-
-
-
-
+# siddhi-io-gcs
+Extension which can be used to receive/publish event data from/to Google Cloud Storage bucket
 
 **Using the extension as a [java library](https://siddhi-io.github.io/siddhi/documentation/siddhi-5.x/user-guide-5.x/#using-siddhi-as-a-java-library)**
 
@@ -24,11 +20,6 @@
 **Using the extension in [Kubernetes Microservice Siddhi Depoloyment](https://siddhi-io.github.io/siddhi/documentation/siddhi-5.x/user-guide-5.x/#using-siddhi-as-kubernetes-micro-service)**
 
 
-
-
-
-
-
 * Post your questions with the ["Siddhi"](http://stackoverflow.com/search?q=siddhi) tag in [Stackoverflow](http://stackoverflow.com/search?q=siddhi). 
 * For questions and feedback please connect via the [Siddhi user Google group](https://groups.google.com/forum/#!forum/siddhi-user).
 * Engage in community development through [Siddhi dev Google group](https://groups.google.com/forum/#!forum/siddhi-dev). 
@@ -40,3 +31,9 @@ Find the detail information on asking questions, providing feedback, reporting i
 [WSO2](https://wso2.com/) provides production, and query support for Siddhi and its [extensions](https://siddhi-io.github.io/siddhi/extensions/). For more details contact via [http://wso2.com/support/](http://wso2.com/support?utm_source=gitanalytics&utm_campaign=gitanalytics_Jul17)
 
 Siddhi is joint research project initiated by [WSO2](http://wso2.com) and [University of Moratuwa](http://www.mrt.ac.lk/web/), Sri Lanka.
+
+**Note: Following packages were private packaged in this extension as they are not OSGI bundles**
+- com.google.* version: 1.90.0 License: Apache 2.0
+- org.threeten.bp.* version: 1.3.3 License: BSD 3-clause
+- io.opencensus.* version: 0.21.0 License: Apache 2.0
+- io.grpc.* version: 1.19.0 License: Apache 2.0 

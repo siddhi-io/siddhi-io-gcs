@@ -34,6 +34,8 @@ import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
 import io.siddhi.query.api.definition.StreamDefinition;
+import java.awt.Event;
+import java.nio.ByteBuffer;
 
 /**
  * This is a sample class-level comment, explaining what the extension class does.
@@ -107,50 +109,7 @@ import io.siddhi.query.api.definition.StreamDefinition;
                         defaultValue = "null",
                         description = "Access Control List for the bucket level ACL defined as a key value pair list" +
                                 " defined as \"'<key>:<value>','<key>:<value>'\""
-                ),
-                @Parameter(
-                        name = GCSConstants.OBJECT_ACL,
-                        type = DataType.STRING,
-                        optional = true,
-                        dynamic = true,
-                        description = "Access Control List for the object level ACL defined as a key value pair list" +
-                                " defined as \"'<key>:<value>','<key>:<value>'\""
-                ),
-                @Parameter(
-                        name = GCSConstants.OBJECT_METADATA,
-                        type = DataType.STRING,
-                        optional = true,
-                        dynamic = true,
-                        description = "Object level metadata for the object defined as a key value pair list" +
-                                " defined as \"'<key>:<value>','<key>:<value>'\""
-                ),
-                @Parameter(
-                        name = GCSConstants.OBJECT_NAME,
-                        type = DataType.STRING,
-                        dynamic = true,
-                        description = "Full name of the object given to the object including the path"
-                ),
-                @Parameter(
-                        name = GCSConstants.FLUSH_SIZE,
-                        type = DataType.INT,
-                        optional = true,
-                        defaultValue = "1",
-                        description = "Number of events that the sink will wait before making a file commit"
-                ),
-                @Parameter(
-                        name = GCSConstants.ROTATE_INTERVAL,
-                        type = DataType.INT,
-                        optional = true,
-                        defaultValue = "-1",
-                        description = "Maximum span of event time"
-                ),
-                @Parameter(
-                        name = GCSConstants.ROTATE_SCHEDULED_INTERVAL,
-                        type = DataType.STRING,
-                        optional = true,
-                        defaultValue = "-1",
-                        description = "Maximum span of event time from the first event"
-                ),
+                )
         },
         examples = {
                 @Example(
@@ -173,7 +132,7 @@ public class GCSSink extends Sink {
      */
     @Override
     public Class[] getSupportedInputEventClasses() {
-            return new Class[0];
+            return new Class[] {String.class, Event.class, ByteBuffer.class};
     }
 
     /**

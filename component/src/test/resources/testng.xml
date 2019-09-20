@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Siddhi-IO-GCS-Test-Suite">
+    <test name="Siddhi-io-google cloud storage-tests" enabled="true" preserve-order="true" parallel="false">
+        <classes>
+<!--     These Tests were commented out as it is a must to have credential file and bucket
+            name to publish to GCS and can't be done with dummy objects       -->
+<!--            <class name="io.siddhi.extension.io.gcs.sink.TestCaseOfGCSSink"/>-->
+        </classes>
+    </test>
+</suite>

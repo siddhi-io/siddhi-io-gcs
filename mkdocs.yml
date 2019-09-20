@@ -1,0 +1,33 @@
+site_name: Siddhi IO GCS
+site_description: Siddhi IO GCS Extension
+repo_name: Siddhi-IO-SQS
+repo_url: https://github.com/siddhi.io/siddhi-io-sqs
+edit_uri: https://github.com/siddhi.io/siddhi-io-sqs/blob/master
+site_author:
+site_url:
+extra_css:
+- stylesheets/extra.css
+extra_javascript:
+- javascripts/extra.js
+copyright: Siddhi - Documentation
+theme:
+  name: 'material'
+  logo: images/siddhi-logo-w.svg
+  favicon: images/favicon.ico
+  palette:
+    primary: teal
+    accent: teal
+google_analytics:
+extra:
+  social:
+markdown_extensions:
+- admonition
+- codehilite:
+    guess_lang: false
+- toc:
+    permalink: true
+pages:
+- Introduction : index.md
+- API Docs:
+  - 1.0.0-SNAPSHOT: api/1.0.0-SNAPSHOT.md
+- License: about/license.md

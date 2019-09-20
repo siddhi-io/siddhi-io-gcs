@@ -47,15 +47,16 @@ public class GCSSinkConfig extends GCSConfig {
                             .validateAndGetStaticValue(GCSConstants.CREDENTIAL_FILE_PATH));
                     break;
                 case GCSConstants.CONTENT_TYPE:
-                    this.contentType = optionHolder.validateAndGetStaticValue(GCSConstants.CONTENT_TYPE);
+                    this.contentType = optionHolder.validateAndGetStaticValue(GCSConstants.CONTENT_TYPE,
+                            GCSConstants.DEFAULT_CONTENT_TYPE);
                     break;
                 case GCSConstants.STORAGE_CLASS:
                     this.storageClass = StorageClass.valueOf(optionHolder
-                            .validateAndGetStaticValue(GCSConstants.STORAGE_CLASS));
+                            .validateAndGetStaticValue(GCSConstants.STORAGE_CLASS, GCSConstants.DEFAULT_STORAGE_CLASS));
                     break;
                 case GCSConstants.ENABLE_VERSIONING:
                     this.enableVersioning = Boolean.parseBoolean(
-                           optionHolder.validateAndGetStaticValue(GCSConstants.ENABLE_VERSIONING, "false"));
+                           optionHolder.validateAndGetStaticValue(GCSConstants.ENABLE_VERSIONING, GCSConstants.DEFAULT_ENABLE_VERSIONING));
                     break;
                 default:
                     // not a valid config attribute

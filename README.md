@@ -1,36 +1,32 @@
-# siddhi-io-gcs
-Extension which can be used to receive/publish event data from/to Google Cloud Storage bucket
+Siddhi IO GCS
+======================================
 
-**Using the extension as a [java library](https://siddhi-io.github.io/siddhi/documentation/siddhi-5.x/user-guide-5.x/#using-siddhi-as-a-java-library)**
+[![Jenkins Build Status](https://wso2.org/jenkins/job/siddhi/job/siddhi-io-gcs/badge/icon)](https://wso2.org/jenkins/job/siddhi/job/siddhi-io-gcs/)
+[![GitHub Release](https://img.shields.io/github/release/siddhi-io/siddhi-io-gcs.svg)](https://github.com/siddhi-io/siddhi-io-gcs/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date/siddhi-io/siddhi-io-gcs.svg)](https://github.com/siddhi-io/siddhi-io-gcs/releases)
+[![GitHub Open Issues](https://img.shields.io/github/issues-raw/siddhi-io/siddhi-io-gcs.svg)](https://github.com/siddhi-io/siddhi-io-gcs/issues)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/siddhi-io/siddhi-io-gcs.svg)](https://github.com/siddhi-io/siddhi-io-gcs/commits/master)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-* This extension can be added as a maven dependency along with other Siddhi dependencies to your project.
+The **siddhi-io-gcs extension** is an extension to <a target="_blank" href="https://wso2.github.io/siddhi">Siddhi</a> 
+that used to receive and publish events via Google Cloud Storage Service. This extension allows users to read/upload events to a GCS bucket.
 
-```
-     <dependency>
-        <groupId>io.siddhi.extension.io.gcs</groupId>
-        <artifactId>siddhi-io-gcs</artifactId>
-        <version>x.x.x</version>
-     </dependency>
-```
-
-**Using the extension in [Local Microservice Siddhi Depoloyment](https://siddhi-io.github.io/siddhi/documentation/siddhi-5.x/user-guide-5.x/#using-siddhi-as-local-micro-service)**
-
-**Using the extension in [Docker Microservice Siddhi Depoloyment](https://siddhi-io.github.io/siddhi/documentation/siddhi-5.x/user-guide-5.x/#using-siddhi-as-docker-micro-service)**
-
-**Using the extension in [Kubernetes Microservice Siddhi Depoloyment](https://siddhi-io.github.io/siddhi/documentation/siddhi-5.x/user-guide-5.x/#using-siddhi-as-kubernetes-micro-service)**
+For information on <a target="_blank" href="https://siddhi.io/">Siddhi</a> and it's features refer <a target="_blank" href="https://siddhi.io/redirect/docs.html">Siddhi Documentation</a>. 
 
 
-* Post your questions with the ["Siddhi"](http://stackoverflow.com/search?q=siddhi) tag in [Stackoverflow](http://stackoverflow.com/search?q=siddhi). 
-* For questions and feedback please connect via the [Siddhi user Google group](https://groups.google.com/forum/#!forum/siddhi-user).
-* Engage in community development through [Siddhi dev Google group](https://groups.google.com/forum/#!forum/siddhi-dev). 
+## Dependencies
+There are no other dependencies needed for this extension.
 
+## Installation
+For installing this extension on various siddhi execution environments refer Siddhi documentation section on <a target="_blank" href="https://siddhi.io/redirect/add-extensions.html">adding extensions</a>.
 
-Find the detail information on asking questions, providing feedback, reporting issues, building and contributing code on [How to contribute?](https://siddhi-io.github.io/siddhi/contribution/) section.
+# Support and Contribution
 
+* We encourage users to ask questions and get support via <a target="_blank" href="https://stackoverflow.com/questions/tagged/siddhi">StackOverflow</a>, make sure to add the `siddhi` tag to the issue for better response.
 
-[WSO2](https://wso2.com/) provides production, and query support for Siddhi and its [extensions](https://siddhi-io.github.io/siddhi/extensions/). For more details contact via [http://wso2.com/support/](http://wso2.com/support?utm_source=gitanalytics&utm_campaign=gitanalytics_Jul17)
+* If you find any issues related to the extension please report them on <a target="_blank" href="https://github.com/siddhi-io/siddhi-execution-string/issues">the issue tracker</a>.
 
-Siddhi is joint research project initiated by [WSO2](http://wso2.com) and [University of Moratuwa](http://www.mrt.ac.lk/web/), Sri Lanka.
+* For production support and other contribution related information refer <a target="_blank" href="https://siddhi.io/community/">Siddhi Community</a> documentation.
 
 **Note: Following packages were private packaged in this extension as they are not OSGI bundles**
 - com.google.* version: 1.90.0 License: Apache 2.0

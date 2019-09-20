@@ -37,6 +37,11 @@ public class GCSConstants {
     public static final String XML_CONTENT_TYPE = "application/xml";
     public static final String BINARY_CONTENT_TYPE = "application/octet-stream";
 
+    // default values
+    public static final String DEFAULT_ENABLE_VERSIONING = "false";
+    public static final String DEFAULT_STORAGE_CLASS = "MULTI_REGIONAL";
+    public static final String DEFAULT_CONTENT_TYPE = "application/octet-stream";
+
     private GCSConstants() {
         // To prevent the initialization of class.
     }

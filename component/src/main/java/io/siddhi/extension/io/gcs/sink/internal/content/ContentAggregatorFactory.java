@@ -25,7 +25,6 @@ import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
  * Class to initialize ContentAggregators.
  */
 public class ContentAggregatorFactory {
-
     public static ContentAggregator getContentGenerator(GCSSinkConfig config) {
         switch (config.getMapType().toLowerCase()) {
             case "json":

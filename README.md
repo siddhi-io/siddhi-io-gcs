@@ -30,3 +30,9 @@ Find the detail information on asking questions, providing feedback, reporting i
 [WSO2](https://wso2.com/) provides production, and query support for Siddhi and its [extensions](https://siddhi-io.github.io/siddhi/extensions/). For more details contact via [http://wso2.com/support/](http://wso2.com/support?utm_source=gitanalytics&utm_campaign=gitanalytics_Jul17)
 
 Siddhi is joint research project initiated by [WSO2](http://wso2.com) and [University of Moratuwa](http://www.mrt.ac.lk/web/), Sri Lanka.
+
+**Note: The Following packages were private packaged as they are non OSGI bundles**
+- com.google.* version: 1.90.0 License: Apache 2.0
+- org.threeten.bp.* version: 1.3.3 License: BSD 3-clause
+- io.opencensus.* version: 0.21.0 License: Apache 2.0
+- io.grpc.* version: 1.19.0 License: Apache 2.0

@@ -27,7 +27,6 @@ import io.siddhi.extension.io.gcs.util.ServiceClient;
  * Interface for RotationStrategies.
  */
 public abstract class RotationStrategy {
-
     private GCSSinkConfig config;
     private ServiceClient client;
     private StateContainer stateContainer = new StateContainer();

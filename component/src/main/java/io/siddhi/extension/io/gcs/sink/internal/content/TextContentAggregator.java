@@ -25,7 +25,6 @@ import java.io.Serializable;
  * ContentAggregator for sinks with Text mapper.
  */
 public class TextContentAggregator implements ContentAggregator, Serializable {
-
     private int eventCount;
     private String delimiter;
     private String contentString;
@@ -43,9 +42,7 @@ public class TextContentAggregator implements ContentAggregator, Serializable {
         }
 
         stringBuilder.append(payload.toString());
-
         contentString = stringBuilder.toString();
-
         eventCount++;
     }
 

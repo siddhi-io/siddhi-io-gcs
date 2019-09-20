@@ -234,7 +234,7 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
      */
     @Override
     public void disconnect() {
-
+        // not applicable
     }
 
     /**
@@ -256,7 +256,6 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
     }
 
     class GCSSinkState extends State {
-
         @Override
         public boolean canDestroy() {
             return false;
@@ -279,7 +278,6 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
 
         @Override
         public void restore(Map<String, Object> state) {
-
             try {
                 if (eventPublisher.getStateContainer().lock()) {
                     eventPublisher.getStateContainer()

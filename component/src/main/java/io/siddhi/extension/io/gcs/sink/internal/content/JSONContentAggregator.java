@@ -40,7 +40,6 @@ public class JSONContentAggregator implements ContentAggregator, Serializable {
 
     @Override
     public String getContentString() {
-
         List<JsonObject> jsonObjects = new ArrayList<>();
 
         eventList.forEach(e -> {

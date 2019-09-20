@@ -62,7 +62,6 @@ public class EventPublisher {
 
     public void publish(Object payload, DynamicOptions dynamicOptions) {
         String objectName = optionHolder.validateAndGetOption(GCSConstants.OBJECT_NAME).getValue(dynamicOptions);
-
         rotationStrategy.queueEvent(objectName, payload);
     }
 }

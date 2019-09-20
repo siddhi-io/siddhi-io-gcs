@@ -46,9 +46,8 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * GCS Sink class
+ * GCS Sink class.
  */
-
 @Extension(
         name = "google-cloud-storage",
         namespace = "sink",
@@ -86,7 +85,6 @@ import java.util.Optional;
                         optional = true,
                         defaultValue = "text/plain",
                         description = "Type of the objects written to the bucket"
-
                 ),
                 @Parameter(
                         name = GCSConstants.BUCKET_ACL,
@@ -158,7 +156,6 @@ import java.util.Optional;
                                 "bucket using provided configurations and upload the object to the bucket.\n"
                 )
         }
-
 )
 public class GCSSink extends Sink<GCSSink.GCSSinkState> {
     private static final Logger logger = Logger.getLogger(GCSSink.class);
@@ -167,12 +164,9 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
     private GCSSinkConfig gcsSinkConfig;
 
     /**
-     * Returns the list of classes which this sink can consume.
-     * Based on the type of the sink, it may be limited to being able to publish specific type of classes.
-     * For example, a sink of type file can only write objects of type String .
+     * Returns the list of classes GCS sink can consume.
      *
-     * @return array of supported classes , if extension can support of any types of classes
-     * then return empty array .
+     * @return array of supported classes
      */
     @Override
     public Class[] getSupportedInputEventClasses() {
@@ -180,10 +174,9 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
     }
 
     /**
-     * Returns a list of supported dynamic options (that means for each event value of the option can change) by
-     * the transport
+     * Returns the list of supported dynamic options by the GCS Sink
      *
-     * @return the list of supported dynamic option keys
+     * @return list of supported dynamic option keys
      */
     @Override
     public String[] getSupportedDynamicOptions() {
@@ -191,15 +184,13 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
     }
 
     /**
-     * The initialization method for {@link Sink}, will be called before other methods. It used to validate
-     * all configurations and to get initial values.
+     * The initialization method for GCS Sink, will be called before other methods.
      *
-     * @param streamDefinition containing stream definition bind to the {@link Sink}
+     * @param streamDefinition containing stream definition bind to the GCS Sink
      * @param optionHolder     Option holder containing static and dynamic configuration related
-     *                         to the {@link Sink}
+     *                         to the GCS Sink
      * @param configReader     to read the sink related system configuration.
-     * @param siddhiAppContext the context of the {@link io.siddhi.query.api.SiddhiApp} used to
-     *                         get siddhi related utility functions.
+     * @param siddhiAppContext the context of the SidhhiApp used to get siddhi related utility functions.
      * @return StateFactory for the Function which contains logic for the updated state based on arrived events.
      */
     @Override
@@ -212,9 +203,8 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
         return GCSSinkState::new;
     }
 
-
     /**
-     * This method will be called when events need to be published via this sink
+     * This method will be called when events need to be published via the GCS sink.
      *
      * @param payload        payload of the event based on the supported event class exported by the extensions
      * @param dynamicOptions holds the dynamic options of this sink and Use this object to obtain dynamic options.
@@ -228,10 +218,9 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
         eventPublisher.publish(payload, dynamicOptions);
     }
 
-
     /**
-     * This method will be called before the processing method.
-     * Intention to establish connection to publish event.
+     * This method will be called before the Sink starts processing events inorder to establish connection
+     * with GCS Service.
      *
      * @throws ConnectionUnavailableException if end point is unavailable the ConnectionUnavailableException thrown
      *                                        such that the  system will take care retrying for connection
@@ -243,8 +232,7 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
     }
 
     /**
-     * Called after all publishing is done, or when {@link ConnectionUnavailableException} is thrown
-     * Implementation of this method should contain the steps needed to disconnect from the sink.
+     * Called after all publishing is done, or when a ConnectionUnavailableException is thrown
      */
     @Override
     public void disconnect() {
@@ -253,7 +241,6 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
 
     /**
      * The method can be called when removing an event receiver.
-     * The cleanups that have to be done after removing the receiver could be done here.
      */
     @Override
     public void destroy() {
@@ -261,7 +248,7 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
     }
 
     /**
-     * Returns the map type of a given Stream definition of a Sink
+     * Returns the map type of a given Stream definition of a Sink.
      * @param streamDefinition
      * @return
      */
@@ -327,8 +314,4 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
             }
         }
     }
-
-
-
-
 }

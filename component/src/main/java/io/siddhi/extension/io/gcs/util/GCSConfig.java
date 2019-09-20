@@ -20,7 +20,7 @@
 package io.siddhi.extension.io.gcs.util;
 
 /**
- * Class to hold common configuration required for the GCS Source/Sink
+ * Class to hold common configuration required for the GCS Source/Sink.
  */
 public class GCSConfig {
 

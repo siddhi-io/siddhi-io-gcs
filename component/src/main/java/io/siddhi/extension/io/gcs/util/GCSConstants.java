@@ -26,7 +26,7 @@ public class GCSConstants {
 
     // attribute names
     public static final String BUCKET_NAME = "bucket.name";
-    public static final String CREDENTIAL_FILE_PATH = "credential.provider.file.path";
+    public static final String CREDENTIAL_FILE_PATH = "credential.path";
     public static final String ENABLE_VERSIONING = "versioning.enabled";
     public static final String STORAGE_CLASS = "storage.class";
     public static final String CONTENT_TYPE = "content.type";

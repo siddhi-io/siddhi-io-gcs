@@ -1,12 +1,30 @@
-package io.siddhi.extension.io.gcs.sink.internal.content;
+/*
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 
+package io.siddhi.extension.io.gcs.sink.internal.content;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Content Aggregator for Binary event mappers
+ * Content Aggregator for Binary event mappers.
  */
 public class BinaryContentAggregator implements ContentAggregator, Serializable {
     private int eventCount;
@@ -19,13 +37,14 @@ public class BinaryContentAggregator implements ContentAggregator, Serializable 
 
     @Override
     public void addEvent(Object payload) {
-        if (eventCount == 0) {
-            contentString = new String(((ByteBuffer) payload).array(), StandardCharsets.UTF_8);
-        } else {
-            contentString = contentString.concat(String.format("%n%s%n", contentDelimiter))
-                    .concat(new String(((ByteBuffer) payload).array(), StandardCharsets.UTF_8));
+        StringBuilder  stringBuilder = new StringBuilder(contentString);
+
+        if(eventCount>0) {
+            stringBuilder.append(String.format("%n%s%n", contentDelimiter));
         }
 
+        stringBuilder.append(payload.toString());
+        contentString = stringBuilder.toString();
         eventCount++;
     }
 

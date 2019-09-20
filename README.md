@@ -1,10 +1,6 @@
 ﻿siddhi-io-gcs
 ======================================
 
-
-
-
-
 **Using the extension as a [java library](https://siddhi-io.github.io/siddhi/documentation/siddhi-5.x/user-guide-5.x/#using-siddhi-as-a-java-library)**
 
 * This extension can be added as a maven dependency along with other Siddhi dependencies to your project.
@@ -22,12 +18,6 @@
 **Using the extension in [Docker Microservice Siddhi Depoloyment](https://siddhi-io.github.io/siddhi/documentation/siddhi-5.x/user-guide-5.x/#using-siddhi-as-docker-micro-service)**
 
 **Using the extension in [Kubernetes Microservice Siddhi Depoloyment](https://siddhi-io.github.io/siddhi/documentation/siddhi-5.x/user-guide-5.x/#using-siddhi-as-kubernetes-micro-service)**
-
-
-
-
-
-
 
 * Post your questions with the ["Siddhi"](http://stackoverflow.com/search?q=siddhi) tag in [Stackoverflow](http://stackoverflow.com/search?q=siddhi). 
 * For questions and feedback please connect via the [Siddhi user Google group](https://groups.google.com/forum/#!forum/siddhi-user).

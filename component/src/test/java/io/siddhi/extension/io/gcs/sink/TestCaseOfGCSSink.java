@@ -5,6 +5,9 @@ import io.siddhi.core.SiddhiManager;
 import io.siddhi.core.stream.input.InputHandler;
 import org.testng.annotations.Test;
 
+/**
+ * Class containing test cases for GCS Sink.
+ */
 public class TestCaseOfGCSSink {
     
     // Before running this test provide valid GCS bucket connector information in the stream definition

@@ -24,7 +24,7 @@ import io.siddhi.extension.io.gcs.sink.internal.beans.StateContainer;
 import io.siddhi.extension.io.gcs.util.ServiceClient;
 
 /**
- * Interface for RotationStrategies
+ * Interface for RotationStrategies.
  */
 public abstract class RotationStrategy {
 

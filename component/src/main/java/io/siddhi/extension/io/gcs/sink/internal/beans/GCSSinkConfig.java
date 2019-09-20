@@ -56,7 +56,8 @@ public class GCSSinkConfig extends GCSConfig {
                     break;
                 case GCSConstants.ENABLE_VERSIONING:
                     this.enableVersioning = Boolean.parseBoolean(
-                           optionHolder.validateAndGetStaticValue(GCSConstants.ENABLE_VERSIONING, GCSConstants.DEFAULT_ENABLE_VERSIONING));
+                           optionHolder.validateAndGetStaticValue(GCSConstants.ENABLE_VERSIONING,
+                                   GCSConstants.DEFAULT_ENABLE_VERSIONING));
                     break;
                 default:
                     // not a valid config attribute

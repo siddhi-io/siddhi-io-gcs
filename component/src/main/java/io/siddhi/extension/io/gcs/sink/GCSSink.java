@@ -36,14 +36,12 @@ import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
 import io.siddhi.extension.io.gcs.sink.internal.publisher.EventPublisher;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
-import io.siddhi.query.api.annotation.Annotation;
 import io.siddhi.query.api.definition.StreamDefinition;
 import org.apache.log4j.Logger;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * GCS Sink class.
@@ -245,26 +243,6 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
     @Override
     public void destroy() {
         this.eventPublisher =  null;
-    }
-
-    /**
-     * Returns the map type of a given Stream definition of a Sink.
-     * @param streamDefinition
-     * @return
-     */
-    private String extractMapType(StreamDefinition streamDefinition) {
-        Optional<Annotation> mapAnnotation = streamDefinition.getAnnotations()
-                .stream()
-                .filter(e -> e.getName().equals("sink"))
-                .findFirst()
-                .get()
-                .getAnnotations()
-                .stream()
-                .filter(e -> e.getName().equals("map"))
-                .findFirst();
-
-        return mapAnnotation.map(annotation -> annotation.getElement("type"))
-                                                .orElse(GCSConstants.DEFAULT_MAPPING_TYPE);
     }
 
     /**

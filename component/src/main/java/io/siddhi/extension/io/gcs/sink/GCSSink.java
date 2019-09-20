@@ -142,7 +142,7 @@ import java.util.Optional;
         examples = {
                 @Example(
                         syntax = "@sink(type='google-cloud-storage'," +
-                                "credential.provider.file.path='<Auth.file.path>'," +
+                                "credential.path='<Auth.file.path>'," +
                                 "bucket.name='<bucke.name>'," +
                                 "storage.class='MULTI-REGIONAL'," +
                                 "flush.size=\"3\"," +

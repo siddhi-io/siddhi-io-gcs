@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
  * Class containing test cases for GCS Sink.
  */
 public class TestCaseOfGCSSink {
-    
+
     // Before running this test provide valid GCS bucket connector information in the stream definition
     // Due to inability of testing without valid configuration against this test is commented out in the testng.xml
     @Test
@@ -19,7 +19,7 @@ public class TestCaseOfGCSSink {
 
         try {
             String streamDef = "@sink(type='google-cloud-storage'," +
-                    "credential.provider.file.path='<absolute.file.path>'," +
+                    "credential.path='<absolute.file.path>'," +
                     "bucket.name='<bucket.name>'," +
                     "storage.class='MULTI_REGIONAL'," +
                     "flush.size=\"3\"," +

@@ -33,6 +33,7 @@ import io.siddhi.core.util.snapshot.state.StateFactory;
 import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.OptionHolder;
 import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
+import io.siddhi.extension.io.gcs.sink.internal.publisher.EventPublisher;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
 import io.siddhi.query.api.definition.StreamDefinition;
 import java.awt.Event;
@@ -124,7 +125,8 @@ import java.nio.ByteBuffer;
 
 public class GCSSink extends Sink {
 
-    GCSSinkConfig config;
+    private EventPublisher publisher;
+    private GCSSinkConfig config;
 
     /**
      * Returns the list of classes which this sink can consume.
@@ -163,9 +165,8 @@ public class GCSSink extends Sink {
     @Override
     protected StateFactory init(StreamDefinition streamDefinition, OptionHolder optionHolder, ConfigReader configReader,
                                 SiddhiAppContext siddhiAppContext) {
-
-        this.config = new GCSSinkConfig(optionHolder);
-
+        config = new GCSSinkConfig(optionHolder);
+        publisher = new EventPublisher(config, optionHolder);
         return null;
     }
 
@@ -180,7 +181,7 @@ public class GCSSink extends Sink {
     @Override
     public void publish(Object payload, DynamicOptions dynamicOptions, State state)
                                                                               throws ConnectionUnavailableException {
-
+        publisher.publishObject(payload, dynamicOptions);
     }
 
     /**
@@ -191,7 +192,8 @@ public class GCSSink extends Sink {
      */
     @Override
     public void connect() throws ConnectionUnavailableException {
-
+        config.setMapType(getMapper().getType());
+        publisher.initializeServiceClient();
     }
 
     /**
@@ -209,7 +211,7 @@ public class GCSSink extends Sink {
      */
     @Override
     public void destroy() {
-
+        publisher = null;
     }
 
     /**

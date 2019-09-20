@@ -25,12 +25,14 @@ import io.siddhi.extension.io.gcs.util.GCSConfig;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 public class GCSSinkConfig extends GCSConfig {
     private boolean enableVersioning;
     private StorageClass storageClass;
     private String contentType;
     private Map<String, String> bucketAcl = new HashMap<>();
+    private String mapType;
 
     public GCSSinkConfig(OptionHolder optionHolder) {
         optionHolder.getStaticOptionsKeys().forEach(key -> {
@@ -49,7 +51,36 @@ public class GCSSinkConfig extends GCSConfig {
                     this.storageClass = StorageClass.valueOf(optionHolder
                                     .validateAndGetStaticValue(GCSConstants.STORAGE_CLASS));
                     break;
+                case GCSConstants.ENABLE_VERSIONING:
+                    this.enableVersioning = Boolean.parseBoolean(optionHolder.validateAndGetStaticValue(GCSConstants.ENABLE_VERSIONING, "false"));
+                    break;
+                default:
+                   // not a valid config attribute
             }
         });
+    }
+
+    public boolean isEnableVersioning() {
+        return enableVersioning;
+    }
+
+    public StorageClass getStorageClass() {
+        return storageClass;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public Map<String, String> getBucketAcl() {
+        return bucketAcl;
+    }
+
+    public String getMapType() {
+        return mapType;
+    }
+
+    public void setMapType(String mapType) {
+        this.mapType = mapType;
     }
 }

@@ -56,7 +56,9 @@ import java.nio.ByteBuffer;
                         name = GCSConstants.CREDENTIAL_FILE_PATH,
                         type = DataType.STRING,
                         description = "Absolute path for the location of the authentication file obtained through the" +
-                                " Google Cloud Platform Console",
+                                " Google Cloud Platform Console, If not defined in the Sink configuration user can" +
+                                " set the credential file location by setting the path as System variable with the" +
+                                "name `GOOGLE_APPLICATION_CREDENTIALS`",
                         defaultValue = "EMPTY_STRING",
                         optional = true
                 ),
@@ -71,7 +73,7 @@ import java.nio.ByteBuffer;
                         name = GCSConstants.STORAGE_CLASS,
                         type = DataType.STRING,
                         description = "Storage class of the objects that are stored in the bucket possible values " +
-                                "are, `multi-regional`, `regional`, 'nearline', `coldline`"
+                                "are, `MULTI_REGIONAL`, `REGIONAL`, 'NEARLINE', `COLDLINE`"
                 ),
                 @Parameter(
                         name = GCSConstants.CONTENT_TYPE,

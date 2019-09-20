@@ -25,8 +25,10 @@ import io.siddhi.extension.io.gcs.util.GCSConfig;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
+/**
+ * Class containing configs related to GCSSink.
+ */
 public class GCSSinkConfig extends GCSConfig {
     private boolean enableVersioning;
     private StorageClass storageClass;
@@ -49,13 +51,14 @@ public class GCSSinkConfig extends GCSConfig {
                     break;
                 case GCSConstants.STORAGE_CLASS:
                     this.storageClass = StorageClass.valueOf(optionHolder
-                                    .validateAndGetStaticValue(GCSConstants.STORAGE_CLASS));
+                            .validateAndGetStaticValue(GCSConstants.STORAGE_CLASS));
                     break;
                 case GCSConstants.ENABLE_VERSIONING:
-                    this.enableVersioning = Boolean.parseBoolean(optionHolder.validateAndGetStaticValue(GCSConstants.ENABLE_VERSIONING, "false"));
+                    this.enableVersioning = Boolean.parseBoolean(
+                           optionHolder.validateAndGetStaticValue(GCSConstants.ENABLE_VERSIONING, "false"));
                     break;
                 default:
-                   // not a valid config attribute
+                    // not a valid config attribute
             }
         });
     }

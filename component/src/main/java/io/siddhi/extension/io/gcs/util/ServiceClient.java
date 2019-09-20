@@ -29,13 +29,17 @@ import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 import io.siddhi.core.exception.ConnectionUnavailableException;
 import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import org.apache.log4j.Logger;
 
+/**
+ * Class containing connection logic with GCS service.
+ */
 public class ServiceClient {
     private Storage storage;
     private GCSConfig config;
@@ -48,10 +52,10 @@ public class ServiceClient {
 
     public ServiceClient initializeClient() throws ConnectionUnavailableException {
         try {
-            if(config.getCredentialFilePath().isEmpty()) {
-               storage = StorageOptions.getDefaultInstance().getService();
+            if (config.getCredentialFilePath().isEmpty()) {
+                storage = StorageOptions.getDefaultInstance().getService();
             } else {
-               storage = StorageOptions.newBuilder()
+                storage = StorageOptions.newBuilder()
                         .setCredentials(GoogleCredentials
                                 .fromStream(new FileInputStream(
                                         new File(config.getCredentialFilePath())))).build().getService();

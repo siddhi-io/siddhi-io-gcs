@@ -26,7 +26,11 @@ import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
 import io.siddhi.extension.io.gcs.util.ServiceClient;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
+/**
+ * Class containing logic of publishing objects.
+ */
 public class EventPublisher {
     private GCSSinkConfig config;
     private OptionHolder optionHolder;
@@ -47,17 +51,17 @@ public class EventPublisher {
 
         switch (config.getMapType()) {
             case "avro":
-                objectBody = new String(((ByteBuffer)payload).array());
+                objectBody = new String(((ByteBuffer) payload).array(), StandardCharsets.UTF_8);
                 break;
             case "binary":
-                objectBody = new String(((ByteBuffer)payload).array());
+                objectBody = new String(((ByteBuffer) payload).array(), StandardCharsets.UTF_8);
                 break;
             default:
                 objectBody = payload.toString();
         }
 
         serviceClient.uploadObject(objectName.concat(String.format(".%s",
-                                                                    getFileType(config.getMapType()))), objectBody);
+                getFileType(config.getMapType()))), objectBody);
     }
 
     private String getFileType(String mapType) {

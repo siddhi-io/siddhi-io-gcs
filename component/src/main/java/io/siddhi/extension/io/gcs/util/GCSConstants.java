@@ -19,9 +19,12 @@
 
 package io.siddhi.extension.io.gcs.util;
 
+/**
+ * Class containing constants which are used in the GCS extension.
+ */
 public class GCSConstants {
     // attribute names
-    public static final String BUCKET_NAME =  "bucket.name";
+    public static final String BUCKET_NAME = "bucket.name";
     public static final String CREDENTIAL_FILE_PATH = "credential.path";
     public static final String ENABLE_VERSIONING = "versioning.enabled";
     public static final String STORAGE_CLASS = "storage.class";

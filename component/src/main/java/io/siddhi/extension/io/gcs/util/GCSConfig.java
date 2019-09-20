@@ -19,6 +19,9 @@
 
 package io.siddhi.extension.io.gcs.util;
 
+/**
+ * Class to contain common configurations for GCSSink and GCSSource.
+ */
 public class GCSConfig {
     private String credentialFilePath;
     private String bucketName;

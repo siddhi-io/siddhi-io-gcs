@@ -21,11 +21,13 @@ google_analytics:
 extra:
   social:
 markdown_extensions:
-  - admonition
-  - toc(permalink=true)
-  - codehilite(guess_lang=false)
+- admonition
+- codehilite:
+    guess_lang: false
+- toc:
+    permalink: true
 pages:
-  - Welcome : index.md
-  - API Docs:
-      - 1.0.0-SNAPSHOT: api/1.0.0-SNAPSHOT.md
-  - License: about/license.md
+- Introduction : index.md
+- API Docs:
+  - 1.0.0-SNAPSHOT: api/1.0.0-SNAPSHOT.md
+- License: about/license.md

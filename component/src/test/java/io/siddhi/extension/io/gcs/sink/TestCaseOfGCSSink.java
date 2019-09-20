@@ -5,6 +5,9 @@ import io.siddhi.core.SiddhiManager;
 import io.siddhi.core.stream.input.InputHandler;
 import org.testng.annotations.Test;
 
+/**
+ * Class containing testcases for GCS Sink.
+ */
 public class TestCaseOfGCSSink {
     @Test
     public void testSQSMessagePublisherInitialization() throws InterruptedException {

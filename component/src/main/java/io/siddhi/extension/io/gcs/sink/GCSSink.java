@@ -126,7 +126,7 @@ public class GCSSink extends Sink {
 
     /**
      * Returns a list of supported dynamic options (that means for each event value of the option can change) by
-     * the transport
+     * the transport.
      *
      * @return the list of supported dynamic option keys
      */
@@ -156,7 +156,7 @@ public class GCSSink extends Sink {
     }
 
     /**
-     * This method will be called when events need to be published via this sink
+     * This method will be called when events need to be published via this sink.
      *
      * @param payload        payload of the event based on the supported event class exported by the extensions
      * @param dynamicOptions holds the dynamic options of this sink and Use this object to obtain dynamic options.

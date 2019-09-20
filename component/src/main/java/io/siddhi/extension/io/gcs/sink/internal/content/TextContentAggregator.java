@@ -38,7 +38,7 @@ public class TextContentAggregator implements ContentAggregator, Serializable {
     public void addEvent(Object payload) {
         StringBuilder stringBuilder = new StringBuilder(contentString);
 
-        if(eventCount>0) {
+        if (eventCount > 0) {
             stringBuilder.append(String.format("%n%s%n", delimiter));
         }
 

@@ -37,13 +37,13 @@ public class BinaryContentAggregator implements ContentAggregator, Serializable 
 
     @Override
     public void addEvent(Object payload) {
-        StringBuilder  stringBuilder = new StringBuilder(contentString);
+        StringBuilder stringBuilder = new StringBuilder(contentString);
 
-        if(eventCount>0) {
+        if (eventCount > 0) {
             stringBuilder.append(String.format("%n%s%n", contentDelimiter));
         }
 
-        stringBuilder.append(payload.toString());
+        stringBuilder.append(new String(((ByteBuffer) payload).array(), StandardCharsets.UTF_8));
         contentString = stringBuilder.toString();
         eventCount++;
     }

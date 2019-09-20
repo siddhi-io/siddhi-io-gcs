@@ -174,7 +174,7 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
     }
 
     /**
-     * Returns the list of supported dynamic options by the GCS Sink
+     * Returns the list of supported dynamic options by the GCS Sink.
      *
      * @return list of supported dynamic option keys
      */
@@ -232,7 +232,7 @@ public class GCSSink extends Sink<GCSSink.GCSSinkState> {
     }
 
     /**
-     * Called after all publishing is done, or when a ConnectionUnavailableException is thrown
+     * Called after all publishing is done, or when a ConnectionUnavailableException is thrown.
      */
     @Override
     public void disconnect() {

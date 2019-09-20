@@ -32,6 +32,7 @@ import io.siddhi.core.util.snapshot.state.State;
 import io.siddhi.core.util.snapshot.state.StateFactory;
 import io.siddhi.core.util.transport.DynamicOptions;
 import io.siddhi.core.util.transport.OptionHolder;
+import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
 import io.siddhi.extension.io.gcs.util.GCSConstants;
 import io.siddhi.query.api.definition.StreamDefinition;
 import java.awt.Event;
@@ -123,6 +124,8 @@ import java.nio.ByteBuffer;
 
 public class GCSSink extends Sink {
 
+    GCSSinkConfig config;
+
     /**
      * Returns the list of classes which this sink can consume.
      * Based on the type of the sink, it may be limited to being able to publish specific type of classes.
@@ -143,7 +146,7 @@ public class GCSSink extends Sink {
      */
     @Override
     public String[] getSupportedDynamicOptions() {
-            return new String[0];
+            return new String[] {GCSConstants.OBJECT_NAME};
     }
 
     /**
@@ -160,6 +163,9 @@ public class GCSSink extends Sink {
     @Override
     protected StateFactory init(StreamDefinition streamDefinition, OptionHolder optionHolder, ConfigReader configReader,
                                 SiddhiAppContext siddhiAppContext) {
+
+        this.config = new GCSSinkConfig(optionHolder);
+
         return null;
     }
 

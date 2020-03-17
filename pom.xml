@@ -28,7 +28,7 @@
     <packaging>pom</packaging>
     <groupId>io.siddhi.extension.io.gcs</groupId>
     <artifactId>siddhi-io-gcs-parent</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>Siddhi I/O Google Cloud Storage</name>
 
     <modules>
@@ -157,7 +157,7 @@
         <url>https://github.com/siddhi-io/siddhi-io-gcs.git</url>
         <developerConnection>scm:git:https://github.com/siddhi-io/siddhi-io-gcs.git</developerConnection>
         <connection>scm:git:https://github.com/siddhi-io/siddhi-io-gcs.git</connection>
-        <tag>HEAD</tag>
+        <tag>v1.0.1</tag>
     </scm>
 
     <properties>

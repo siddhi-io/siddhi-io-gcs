@@ -190,7 +190,7 @@ public class GCSSink extends Sink {
      */
     @Override
     public void destroy() {
-        publisher = null;
+
     }
 
     /**

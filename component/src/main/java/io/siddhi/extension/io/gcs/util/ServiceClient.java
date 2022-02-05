@@ -29,7 +29,8 @@ import com.google.cloud.storage.StorageException;
 import com.google.cloud.storage.StorageOptions;
 import io.siddhi.core.exception.ConnectionUnavailableException;
 import io.siddhi.extension.io.gcs.sink.internal.beans.GCSSinkConfig;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,7 +45,7 @@ public class ServiceClient {
     private Storage storage;
     private GCSConfig config;
 
-    private static final Logger logger = Logger.getLogger(ServiceClient.class);
+    private static final Logger logger = LogManager.getLogger(ServiceClient.class);
 
     public ServiceClient(GCSSinkConfig config) {
         this.config = config;

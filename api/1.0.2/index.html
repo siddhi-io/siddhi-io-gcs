@@ -38,7 +38,7 @@
     
     
       
-        <title>1.0.1 - Siddhi IO GCS</title>
+        <title>1.0.2 - Siddhi IO GCS</title>
       
     
     
@@ -89,7 +89,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#api-docs-v101" tabindex="1" class="md-skip">
+      <a href="#api-docs-v102" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -115,7 +115,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                1.0.1
+                1.0.2
               
             </span>
           
@@ -269,18 +269,6 @@
           
           
 
-
-  <li class="md-nav__item">
-    <a href="../1.0.2/" title="1.0.2" class="md-nav__link">
-      1.0.2
-    </a>
-  </li>
-
-        
-          
-          
-          
-
   
 
 
@@ -292,11 +280,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        1.0.1
+        1.0.2
       </label>
     
-    <a href="./" title="1.0.1" class="md-nav__link md-nav__link--active">
-      1.0.1
+    <a href="./" title="1.0.2" class="md-nav__link md-nav__link--active">
+      1.0.2
     </a>
     
       
@@ -337,6 +325,18 @@
   
 </nav>
     
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../1.0.1/" title="1.0.1" class="md-nav__link">
+      1.0.1
+    </a>
   </li>
 
         
@@ -437,17 +437,19 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/siddhi.io/siddhi-io-sqs/blob/master/api/1.0.1.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/siddhi.io/siddhi-io-sqs/blob/master/api/1.0.2.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="api-docs-v101">API Docs - v1.0.1<a class="headerlink" href="#api-docs-v101" title="Permanent link">&para;</a></h1>
+                <h1 id="api-docs-v102">API Docs - v1.0.2<a class="headerlink" href="#api-docs-v102" title="Permanent link">&para;</a></h1>
 <div class="admonition info">
-<p class="admonition-title">Tested Siddhi Core version: <em><a target="_blank" href="http://siddhi.io/en/v5.0/docs/query-guide/">5.0.2</a></em></p>
+<p class="admonition-title">Tested Siddhi Core version: <em><a target="_blank" href="http://siddhi.io/en/v5.1/docs/query-guide/">5.1.21</a></em></p>
 <p>It could also support other Siddhi Core minor versions.</p>
 </div>
 <h2 id="sink">Sink<a class="headerlink" href="#sink" title="Permanent link">&para;</a></h2>
-<h3 id="google-cloud-storage-sink">google-cloud-storage <em><a target="_blank" href="http://siddhi.io/en/v5.0/docs/query-guide/#sink">(Sink)</a></em><a class="headerlink" href="#google-cloud-storage-sink" title="Permanent link">&para;</a></h3>
-<p><p style="word-wrap: break-word">Sink extension which can be used to publish events to a GCS bucket.</p>
+<h3 id="google-cloud-storage-sink">google-cloud-storage <em><a target="_blank" href="http://siddhi.io/en/v5.1/docs/query-guide/#sink">(Sink)</a></em><a class="headerlink" href="#google-cloud-storage-sink" title="Permanent link">&para;</a></h3>
+<p><p></p>
+<p style="word-wrap: break-word;margin: 0;">Sink extension which can be used to publish events to a GCS bucket.</p>
+<p></p>
 <span id="syntax" class="md-typeset" style="display: block; font-weight: bold;">Syntax</span></p>
 <div class="codehilite"><pre><span></span>@sink(type=&quot;google-cloud-storage&quot;, bucket.name=&quot;&lt;STRING&gt;&quot;, credential.path=&quot;&lt;STRING&gt;&quot;, versioning.enabled=&quot;&lt;BOOL&gt;&quot;, storage.class=&quot;&lt;STRING&gt;&quot;, content.type=&quot;&lt;STRING&gt;&quot;, bucket.acl=&quot;&lt;STRING&gt;&quot;, @map(...)))
 </pre></div>
@@ -465,7 +467,7 @@
     </tr>
     <tr>
         <td style="vertical-align: top">bucket.name</td>
-        <td style="vertical-align: top; word-wrap: break-word">Name of the GCS bucket</td>
+        <td style="vertical-align: top; word-wrap: break-word"><p style="word-wrap: break-word;margin: 0;">Name of the GCS bucket</p></td>
         <td style="vertical-align: top"></td>
         <td style="vertical-align: top">STRING</td>
         <td style="vertical-align: top">No</td>
@@ -473,7 +475,7 @@
     </tr>
     <tr>
         <td style="vertical-align: top">credential.path</td>
-        <td style="vertical-align: top; word-wrap: break-word">Absolute path for the location of the authentication file obtained through the Google Cloud Platform Console, If not defined in the Sink configuration user can set the credential file location by setting the path as System variable with thename <code>GOOGLE_APPLICATION_CREDENTIALS</code></td>
+        <td style="vertical-align: top; word-wrap: break-word"><p style="word-wrap: break-word;margin: 0;">Absolute path for the location of the authentication file obtained through the Google Cloud Platform Console, If not defined in the Sink configuration user can set the credential file location by setting the path as System variable with thename <code>GOOGLE_APPLICATION_CREDENTIALS</code></p></td>
         <td style="vertical-align: top">EMPTY_STRING</td>
         <td style="vertical-align: top">STRING</td>
         <td style="vertical-align: top">Yes</td>
@@ -481,7 +483,7 @@
     </tr>
     <tr>
         <td style="vertical-align: top">versioning.enabled</td>
-        <td style="vertical-align: top; word-wrap: break-word">Boolean option to indicate whether the bucket should enable versioning or not</td>
+        <td style="vertical-align: top; word-wrap: break-word"><p style="word-wrap: break-word;margin: 0;">Boolean option to indicate whether the bucket should enable versioning or not</p></td>
         <td style="vertical-align: top">false</td>
         <td style="vertical-align: top">BOOL</td>
         <td style="vertical-align: top">Yes</td>
@@ -489,7 +491,7 @@
     </tr>
     <tr>
         <td style="vertical-align: top">storage.class</td>
-        <td style="vertical-align: top; word-wrap: break-word">Storage class of the objects that are stored in the bucket possible values are, <code>MULTI_REGIONAL</code>, <code>REGIONAL</code>, 'NEARLINE', <code>COLDLINE</code></td>
+        <td style="vertical-align: top; word-wrap: break-word"><p style="word-wrap: break-word;margin: 0;">Storage class of the objects that are stored in the bucket possible values are, <code>MULTI_REGIONAL</code>, <code>REGIONAL</code>, 'NEARLINE', <code>COLDLINE</code></p></td>
         <td style="vertical-align: top"></td>
         <td style="vertical-align: top">STRING</td>
         <td style="vertical-align: top">No</td>
@@ -497,7 +499,7 @@
     </tr>
     <tr>
         <td style="vertical-align: top">content.type</td>
-        <td style="vertical-align: top; word-wrap: break-word">Type of the objects written to the bucket</td>
+        <td style="vertical-align: top; word-wrap: break-word"><p style="word-wrap: break-word;margin: 0;">Type of the objects written to the bucket</p></td>
         <td style="vertical-align: top">text/plain</td>
         <td style="vertical-align: top">STRING</td>
         <td style="vertical-align: top">Yes</td>
@@ -505,7 +507,7 @@
     </tr>
     <tr>
         <td style="vertical-align: top">bucket.acl</td>
-        <td style="vertical-align: top; word-wrap: break-word">Access Control List for the bucket level ACL defined as a key value pair list defined as "'&lt;key&gt;:&lt;value&gt;','&lt;key&gt;:&lt;value&gt;'"</td>
+        <td style="vertical-align: top; word-wrap: break-word"><p style="word-wrap: break-word;margin: 0;">Access Control List for the bucket level ACL defined as a key value pair list defined as "'&lt;key&gt;:&lt;value&gt;','&lt;key&gt;:&lt;value&gt;'"</p></td>
         <td style="vertical-align: top">EMPTY_STRING</td>
         <td style="vertical-align: top">STRING</td>
         <td style="vertical-align: top">Yes</td>
@@ -519,7 +521,11 @@ define stream outputStream(key string, payload string, suffix string);
 </pre></div>
 
 
-<p style="word-wrap: break-word">Above example demonstrate how an GCS sink is getting configured in order to publish messages to a GCS Bucket.<br>Once an event is received by outStream, an text file will be generated by 'text' mapper from the attribute values of the event. GCS sink will connect to the bucket using provided configurations and upload the object to the bucket.<br></p>
+<p></p>
+
+<p style="word-wrap: break-word;margin: 0;">Above example demonstrate how an GCS sink is getting configured in order to publish messages to a GCS Bucket.<br>Once an event is received by outStream, an text file will be generated by 'text' mapper from the attribute values of the event. GCS sink will connect to the bucket using provided configurations and upload the object to the bucket.<br></p>
+
+<p></p>
                 
                   
                 
@@ -540,7 +546,7 @@ define stream outputStream(key string, payload string, suffix string);
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../1.0.2/" title="1.0.2" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../latest/" title="latest" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -549,19 +555,19 @@ define stream outputStream(key string, payload string, suffix string);
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                1.0.2
+                latest
               </span>
             </div>
           </a>
         
         
-          <a href="../1.0.0/" title="1.0.0" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../1.0.1/" title="1.0.1" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                1.0.0
+                1.0.1
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
